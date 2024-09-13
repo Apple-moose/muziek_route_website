@@ -1,21 +1,24 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../style/global.scss";
-import anoushHiAudio from "../components/AnoushHi.mp3";
-import cmonPatAudio from "../components/CmonPat.wav";
-import noSunshine from "../components/noSunshine.pdf";
+import { selectFav } from "../store/favorites/selectors.js";
+import { bootstrapUser, resetFavData } from "../store/favorites/slice.js";
 import { songList } from "../components/songList";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import V_M_fiets from "../components/V_M_fiets.jpg";
+import { NoLike, Like, DisLike } from "../components/likeButtons";
+import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { Container, Col, Image, Row, Button, Modal } from "react-bootstrap";
-
 export default function HomePage() {
-  //   const navigate = useNavigate();
+  const fav = useSelector(selectFav);
+  const dispatch = useDispatch();
 
   const [showMenu, setShowMenu] = useState(false);
   const [showSongs, setShowSongs] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
-  const [chosenSong, setchosenSong] = useState("");
+  const [chosenSong, setChosenSong] = useState("");
+  const [nextSong, setNextSong] = useState("");
+  const [previousSong, setPreviousSong] = useState("");
+  const [favoritesArray, setFavoritesArray] = useState([]);
   const onClickShowMenu = () => setShowMenu(true);
   const onClickShowSongs = () => setShowSongs(true);
   const onClickShowLyrics = () => setShowLyrics(true);
@@ -23,8 +26,8 @@ export default function HomePage() {
   const hideSongs = () => setShowSongs(false);
   const hideLyrics = () => setShowLyrics(false);
 
-  const audioAnoush = new Audio(anoushHiAudio);
-  const audioPat = new Audio(cmonPatAudio);
+  const audioAnoush = new Audio("AnoushHi.mp3");
+  const audioPat = new Audio("CmonPat.wav");
 
   const playAudioAnoush = () => {
     audioAnoush.play().catch((error) => {
@@ -39,8 +42,54 @@ export default function HomePage() {
   };
 
   const lyricsUrl = (doc) => {
-    return `../components/${doc}.pdf`;
+    return `/song_list_jpegs/${doc}.jpg`;
   };
+
+  const findNextSong = (id) => {
+    let nextSongId = Number(id) + 1;
+    const song = songList.find(
+      (s) => nextSongId.toString() === s.id.toString()
+    );
+    setNextSong(song);
+  };
+
+  const findPreviousSong = (id) => {
+    let nextSongId = Number(id) - 1;
+    const song = songList.find(
+      (s) => nextSongId.toString() === s.id.toString()
+    );
+    setPreviousSong(song);
+  };
+
+  const findUserData = (favId) => {
+    return fav.find((u) => u.id === favId);
+  };
+
+  const buttonColors = [
+    "primary",
+    "secondary",
+    "warning",
+    "success",
+    "danger",
+    "info",
+  ];
+
+  // Function to get a random color from the array
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * buttonColors.length);
+    return buttonColors[randomIndex];
+  };
+
+  useEffect(() => {
+    dispatch(bootstrapUser());
+    if (chosenSong) {
+      findNextSong(chosenSong.id);
+
+      if (chosenSong.id !== 1) {
+        findPreviousSong(chosenSong.id);
+      }
+    }
+  }, [chosenSong]);
 
   return (
     <>
@@ -61,7 +110,7 @@ export default function HomePage() {
         </Row>
         <Row style={{ position: "relative", width: "100%", margin: "0" }}>
           <Image
-            src={V_M_fiets}
+            src="V_M_fiets.jpg"
             alt="oh oh...not found!"
             className="background"
             style={{ width: "100%", height: "auto" }}
@@ -148,30 +197,67 @@ export default function HomePage() {
 
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
-      <Modal show={showSongs} onHide={hideSongs}>
-        <Modal.Header closeButton className="d-flex justify-content-center">
-          <Modal.Title className="fs-4 fw-b">
-            Repertory: (click on title for lyrics)
-          </Modal.Title>
+      <Modal show={showSongs} onHide={hideSongs} className="modalList">
+        <Modal.Header
+          closeButton
+          className="d-flex justify-content-between align-items-center"
+        >
+          <div className="d-flex flex-column w-100">
+            <Modal.Title className="fs-2 fw-b">
+              Repertory: (click on title for lyrics)
+            </Modal.Title>
+          </div>
+          <div>
+          <Button
+            variant="warning"
+            className="fs-4 fw-b ms-3"
+            onClick={() => {
+              dispatch(resetFavData());
+            }}
+          >
+            Reset
+          </Button></div>
         </Modal.Header>
+
         {songList.map((song) => {
           return (
-            <Modal.Body key={song.id}>
-              <Button
-                variant="outline-danger"
-                className="text-dark fs-4 fw-b ms-0 me-0 text-center"
-                onClick={() => {
-                  setchosenSong(song.doc);
-                  onClickShowLyrics();
-                  hideSongs();
-                }}
-              >
-                {song.title} -{song.artist}
-              </Button>
-            </Modal.Body>
+            <Row key={song.id} className="align-items-center ms-2 mb-2">
+              <Col md={8} className="text-start fs-1">
+                <Button
+                  variant={getRandomColor()}
+                  className="text-light fs-4 fw-b text-start w-100"
+                  style={{
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
+                  }}
+                  onClick={() => {
+                    setChosenSong(song);
+                    onClickShowLyrics();
+                    hideSongs();
+                  }}
+                >
+                  {song.title} - {song.artist}
+                </Button>
+              </Col>
+              {!findUserData(song.id) ? (
+                <NoLike key={song.id} id={song.id} />
+              ) : (
+                fav.map((u) => {
+                  if (u.id === song.id) {
+                    if (u.like === 1 && u.dislike === 0) {
+                      return <Like key={`like-${u.id}`} id={song.id} />;
+                    } else if (u.like === 0 && u.dislike === 1) {
+                      return <DisLike key={`dislike-${u.id}`} id={song.id} />;
+                    } else if (u.like === 0 && u.dislike === 0) {
+                      return <NoLike key={`dislike-${u.id}`} id={song.id} />;
+                    }
+                  }
+                  return null;
+                })
+              )}
+            </Row>
           );
         })}
-        ;
+
         <Modal.Body className="text-end">
           <Button
             variant="secondary"
@@ -187,16 +273,56 @@ export default function HomePage() {
 
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
-      <Modal show={showLyrics} onHide={hideLyrics}>
+      <Modal show={showLyrics} onHide={hideLyrics} className="modalLyrics">
+        <Modal.Header closeButton className="text-center">
+          <Modal.Title className="fs-2 fw-b w-100">
+            {chosenSong.title} by {chosenSong.artist}
+          </Modal.Title>
+        </Modal.Header>
+        <Row className="ms-2 me-2">
+          <Col md={4} className="text-start">
+            {!chosenSong ? null : chosenSong.id.toString() !== "1" ? (
+              <span>
+                <IoMdSkipBackward
+                  size={65}
+                  color="orange"
+                  onClick={() => {
+                    setChosenSong(previousSong);
+                  }}
+                />
+                {previousSong ? <b>{previousSong.title}</b> : null}
+              </span>
+            ) : null}
+          </Col>
+          <Col md={4} className="text-center mt-3">
+            <Button
+              variant="warning"
+              onClick={() => {
+                hideLyrics();
+                onClickShowSongs();
+              }}
+            >
+              Back to List
+            </Button>
+          </Col>
+          <Col md={4} className="text-end">
+            {" "}
+            {nextSong ? <b>{nextSong.title}</b> : null}
+            <IoMdSkipForward
+              size={65}
+              color="orange"
+              onClick={() => {
+                setChosenSong(nextSong);
+              }}
+            />
+          </Col>
+        </Row>
         <Modal.Body>
-          <iframe
-            // src={lyricsUrl(chosenSong)}
-            src={noSunshine}
-            width="200%"
-            height="1000px"
-            style={{ border: "none" }}
-            title="PDF Viewer"
-          ></iframe>
+          <Image
+            src={lyricsUrl(chosenSong.doc)}
+            alt="oh oh...image not found!"
+            style={{ width: "100%", height: "auto" }}
+          />
         </Modal.Body>
         <Modal.Body className="text-end">
           <Button
@@ -206,7 +332,7 @@ export default function HomePage() {
               onClickShowSongs();
             }}
           >
-            Close
+            Back to List
           </Button>
         </Modal.Body>
       </Modal>
