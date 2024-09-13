@@ -4,7 +4,6 @@ import {
   addFav,
   dislikeFav,
   resetFav,
-  bootstrapUser,
 } from "../store/favorites/slice";
 import { IoMdThumbsDown, IoMdThumbsUp } from "react-icons/io";
 import { Col } from "react-bootstrap";

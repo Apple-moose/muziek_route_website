@@ -18,7 +18,6 @@ export default function HomePage() {
   const [chosenSong, setChosenSong] = useState("");
   const [nextSong, setNextSong] = useState("");
   const [previousSong, setPreviousSong] = useState("");
-  const [favoritesArray, setFavoritesArray] = useState([]);
   const onClickShowMenu = () => setShowMenu(true);
   const onClickShowSongs = () => setShowSongs(true);
   const onClickShowLyrics = () => setShowLyrics(true);
@@ -81,7 +80,6 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    dispatch(bootstrapUser());
     if (chosenSong) {
       findNextSong(chosenSong.id);
 
@@ -90,6 +88,10 @@ export default function HomePage() {
       }
     }
   }, [chosenSong]);
+
+  useEffect(() => {
+    dispatch(bootstrapUser());
+  }, [dispatch]);
 
   return (
     <>
@@ -208,15 +210,16 @@ export default function HomePage() {
             </Modal.Title>
           </div>
           <div>
-          <Button
-            variant="warning"
-            className="fs-4 fw-b ms-3"
-            onClick={() => {
-              dispatch(resetFavData());
-            }}
-          >
-            Reset
-          </Button></div>
+            <Button
+              variant="warning"
+              className="fs-4 fw-b ms-3"
+              onClick={() => {
+                dispatch(resetFavData());
+              }}
+            >
+              Reset
+            </Button>
+          </div>
         </Modal.Header>
 
         {songList.map((song) => {
