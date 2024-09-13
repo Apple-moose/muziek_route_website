@@ -97,13 +97,13 @@ export default function HomePage() {
     <>
       <Container fluid className="bg-black" style={{ overflowX: "hidden" }}>
         <Row className="mb-5 me-0 text-white text-center">
-          <Col md={1} className="text-center ms-5 mb-2 mt-4 fs-1">
+          <Col md={1} className="text-center ms-2 mb-2 mt-4 fs-1">
             <Button
               type="button"
               onClick={onClickShowMenu}
               style={{ background: "transparent", border: "none" }}
             >
-              <BsFillGrid3X3GapFill size={100} />
+              <BsFillGrid3X3GapFill size={80} />
             </Button>
           </Col>
           <Col md={10}>
@@ -126,7 +126,7 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              //   backgroundColor: "red",
+              // backgroundColor: "red",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -139,7 +139,7 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              //   backgroundColor: "blue",
+              // backgroundColor: "blue",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -324,7 +324,7 @@ export default function HomePage() {
           <Image
             src={lyricsUrl(chosenSong.doc)}
             alt="oh oh...image not found!"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "200%", height: "auto" }}
           />
         </Modal.Body>
         <Modal.Body className="text-end">
