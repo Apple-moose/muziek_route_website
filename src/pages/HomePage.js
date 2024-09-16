@@ -8,6 +8,7 @@ import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { NoLike, Like, DisLike } from "../components/likeButtons";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { Container, Col, Image, Row, Button, Modal } from "react-bootstrap";
+
 export default function HomePage() {
   const fav = useSelector(selectFav);
   const dispatch = useDispatch();
@@ -15,19 +16,28 @@ export default function HomePage() {
   const [showMenu, setShowMenu] = useState(false);
   const [showSongs, setShowSongs] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
+  const [showBioPat, setShowBioPat] = useState(false);
+  //   const [showBioAnoush, setShowBioAnoush] = useState[false];
   const [chosenSong, setChosenSong] = useState("");
   const [nextSong, setNextSong] = useState("");
   const [previousSong, setPreviousSong] = useState("");
   const onClickShowMenu = () => setShowMenu(true);
   const onClickShowSongs = () => setShowSongs(true);
   const onClickShowLyrics = () => setShowLyrics(true);
+  const onClickShowBioPat = () => setShowBioPat(true);
   const hideMenu = () => setShowMenu(false);
   const hideSongs = () => setShowSongs(false);
   const hideLyrics = () => setShowLyrics(false);
+  const hideBioPat = () => setShowBioPat(false);
 
-  const audioAnoush = new Audio("AnoushHi.mp3");
-  const audioPat = new Audio("CmonPat.wav");
+  const audioAnoush = new Audio("Anousch_love.mp3");
+  const audioPat = new Audio("Pat_love.mp3");
+  const audioGuitar = new Audio("guitar.mp3");
+  const audioBike = new Audio("bike.mp3");
+  const audioValk = new Audio("Valkenhoff.mp3");
+  const audioMartel = new Audio("Martel.mp3");
 
+  //-----------------AUDIOS--------------------------------
   const playAudioAnoush = () => {
     audioAnoush.play().catch((error) => {
       console.error("Audio play failed:", error);
@@ -40,6 +50,31 @@ export default function HomePage() {
     });
   };
 
+  const playAudioGuitar = () => {
+    audioGuitar.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  const playAudioBike = () => {
+    audioBike.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  const playAudioValk = () => {
+    audioValk.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  const playAudioMartel = () => {
+    audioMartel.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  //-----------------LYRICS--------------------------------
   const lyricsUrl = (doc) => {
     return `/song_list_jpegs/${doc}.jpg`;
   };
@@ -64,6 +99,8 @@ export default function HomePage() {
     return fav.find((u) => u.id === favId);
   };
 
+  //-----------------COLORS--------------------------------
+
   const buttonColors = [
     "primary",
     "secondary",
@@ -73,11 +110,12 @@ export default function HomePage() {
     "info",
   ];
 
-  // Function to get a random color from the array
   const getRandomColor = () => {
     const randomIndex = Math.floor(Math.random() * buttonColors.length);
     return buttonColors[randomIndex];
   };
+
+  //-----------------DEPENDENCIES-------------------------------
 
   useEffect(() => {
     if (chosenSong) {
@@ -92,6 +130,8 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(bootstrapUser());
   }, [dispatch]);
+
+  //-----------------RENDER--------------------------------
 
   return (
     <>
@@ -118,6 +158,45 @@ export default function HomePage() {
             style={{ width: "100%", height: "auto" }}
           />
           <div
+            onClick={playAudioValk}
+            style={{
+              position: "absolute",
+              top: "0%",
+              left: "5%",
+              width: "55%",
+              height: "10%",
+              cursor: "pointer",
+              //   backgroundColor: "grey",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
+            onClick={playAudioMartel}
+            style={{
+              position: "absolute",
+              top: "0%",
+              right: "5%",
+              width: "30%",
+              height: "10%",
+              cursor: "pointer",
+              //   backgroundColor: "purple",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
+            onClick={playAudioGuitar}
+            style={{
+              position: "absolute",
+              top: "11%",
+              left: "2%",
+              width: "27%",
+              height: "80%",
+              cursor: "pointer",
+              //   backgroundColor: "red",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
             onClick={playAudioAnoush}
             style={{
               position: "absolute",
@@ -126,7 +205,7 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              // backgroundColor: "red",
+              //   backgroundColor: "yellow",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -139,7 +218,20 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              // backgroundColor: "blue",
+              //   backgroundColor: "blue",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
+            onClick={playAudioBike}
+            style={{
+              position: "absolute",
+              bottom: "1%",
+              right: "1%",
+              width: "25%",
+              height: "50%",
+              cursor: "pointer",
+              //   backgroundColor: "green",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -175,7 +267,10 @@ export default function HomePage() {
             <Button
               variant="primary"
               className="fs-1 fw-b ms-0 me-0 text-center"
-              onClick={hideMenu}
+              onClick={() => {
+                onClickShowBioPat();
+                hideMenu();
+              }}
             >
               Bio Patrice
             </Button>
@@ -324,7 +419,7 @@ export default function HomePage() {
           <Image
             src={lyricsUrl(chosenSong.doc)}
             alt="oh oh...image not found!"
-            style={{ width: "200%", height: "auto" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </Modal.Body>
         <Modal.Body className="text-end">
@@ -336,6 +431,39 @@ export default function HomePage() {
             }}
           >
             Back to List
+          </Button>
+        </Modal.Body>
+      </Modal>
+
+      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+
+      <Modal show={showBioPat} onHide={hideBioPat}>
+        <Row className="ms-2 me-3 text-end">
+          <Button
+            variant="warning"
+            onClick={() => {
+              hideBioPat();
+              onClickShowMenu();
+            }}
+          >
+            Back to List
+          </Button>
+        </Row>
+        <Modal.Body>
+          <Image
+            src="bio_p_martel.jpg"
+            alt="oh oh...image not found!"
+            style={{ width: "100%", height: "auto" }}
+          />
+        </Modal.Body>
+        <Modal.Body className="text-end">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              hideBioPat();
+            }}
+          >
+            Close
           </Button>
         </Modal.Body>
       </Modal>
