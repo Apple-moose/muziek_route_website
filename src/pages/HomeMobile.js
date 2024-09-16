@@ -1,15 +1,15 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "../style/global.scss";
+import "../style/globalMobile.scss";
 import { selectFav } from "../store/favorites/selectors.js";
 import { bootstrapUser, resetFavData } from "../store/favorites/slice.js";
 import { songList } from "../components/songList";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { NoLike, Like, DisLike } from "../components/likeButtons";
+import { NoLike, Like, DisLike } from "../components/likeButtonsMobile";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { Container, Col, Image, Row, Button, Modal } from "react-bootstrap";
 
-export default function HomePage() {
+export default function HomePageMobile() {
   const fav = useSelector(selectFav);
   const dispatch = useDispatch();
 
@@ -135,19 +135,19 @@ export default function HomePage() {
   return (
     <>
       <Container fluid className="bg-black" style={{ overflowX: "hidden" }}>
-        <Row className="mb-5 me-0 text-white text-center">
-          <Col md={1} className="text-center ms-2 mb-2 mt-4 fs-1">
-            <Button
-              type="button"
-              onClick={onClickShowMenu}
-              style={{ background: "transparent", border: "none" }}
-            >
-              <BsFillGrid3X3GapFill size={80} />
-            </Button>
-          </Col>
-          <Col md={10}>
-            <div className="mt-5 fs-1">⭐️Welkom Muziek Routers!⭐️</div>
-          </Col>
+        <Row>
+          <div className="mt-3 mb-2 text-center fs-1 text-white">
+            ⭐️Welkom Muziek Routers!⭐️
+          </div>
+        </Row>
+        <Row className="mb-4 mt-2 me-0 text-white text-center">
+          <Button
+            type="button"
+            onClick={onClickShowMenu}
+            style={{ background: "transparent", border: "none" }}
+          >
+            <BsFillGrid3X3GapFill size={50} />
+          </Button>
         </Row>
         <Row style={{ position: "relative", width: "100%", margin: "0" }}>
           <Image
@@ -299,17 +299,17 @@ export default function HomePage() {
 
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
-      <Modal show={showSongs} onHide={hideSongs} className="modalList">
+      <Modal show={showSongs} onHide={hideSongs} className="modalListMobile">
         <Modal.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column w-100">
-            <Modal.Title className="fs-2 fw-b">
-              Repertory: (click on title for lyrics)
+            <Modal.Title className="fs-4 fw-b">
+              Repertory: <p>(click on title for lyrics)</p>
             </Modal.Title>
           </div>
           <div>
             <Button
               variant="secondary"
-              className="fs-4 fw-b ms-3"
+              className="fs-6 fw-b ms-3"
               onClick={() => {
                 dispatch(resetFavData());
               }}
@@ -322,12 +322,12 @@ export default function HomePage() {
         {songList.map((song) => {
           return (
             <Row key={song.id} className="align-items-center ms-2 mb-2">
-              <Col md={8} className="text-start fs-1">
+              <Col md={8} className="text-start">
                 <Button
                   variant={getRandomColor()}
-                  className="text-light fs-4 fw-b text-start w-100"
+                  className="text-light fs-5 fw-b text-start w-100"
                   style={{
-                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                   }}
                   onClick={() => {
                     setChosenSong(song);
@@ -385,7 +385,11 @@ export default function HomePage() {
 
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
-      <Modal show={showLyrics} onHide={hideLyrics} className="modalLyrics">
+      <Modal
+        show={showLyrics}
+        onHide={hideLyrics}
+        className="modalLyricsMobile"
+      >
         <Modal.Header closeButton className="text-center">
           <Modal.Title className="fs-2 fw-b w-100">
             {chosenSong.title} by {chosenSong.artist}
@@ -451,7 +455,7 @@ export default function HomePage() {
 
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
-      <Modal show={showBioPat} onHide={hideBioPat} className="modalBio">
+      <Modal show={showBioPat} onHide={hideBioPat} className="modalBioMobile">
         <Row className="ms-2 me-3 text-end">
           <Button
             variant="warning"
@@ -482,7 +486,11 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showBioAnousch} onHide={hideBioAnousch}>
+      <Modal
+        show={showBioAnousch}
+        onHide={hideBioAnousch}
+        className="modalBioMobile"
+      >
         <Row className="ms-2 me-3 text-end">
           <Button
             variant="warning"
@@ -513,7 +521,7 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showContact} onHide={hideContact}>
+      <Modal show={showContact} onHide={hideContact} className="modalBioMobile">
         <Row className="ms-2 me-3 text-end">
           <Button
             variant="warning"
