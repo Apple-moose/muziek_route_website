@@ -5,30 +5,30 @@ import { isMobile } from "react-device-detect";
 import HomePage from "./pages/HomePage";
 import HomePageMobile from "./pages/HomeMobile";
 
-// export default function App() {
-//   return (
-//     <div>
-//       {isMobile ? (
-//         <Routes>
-//           <Route path="/" element={<HomePageMobile />} />
-//         </Routes>
-//       ) : (
-//         <Routes>
-//           <Route path="/" element={<HomePage />} />
-//         </Routes>
-//       )}
-//     </div>
-//   );
-// }
+export default function App() {
+  return (
+    <div>
+      {isMobile ? (
+        <Routes>
+          <Route path="/" element={<HomePageMobile />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      )}
+    </div>
+  );
+}
 
 //For Mobile Sizing-------------------------------------
 
-export default function App() {
-  return (
-        <div>
-          <Routes>
-            <Route path="/" element={<HomePageMobile />} />
-          </Routes>
-      </div>
-  );
-}
+// export default function App() {
+//   return (
+//         <div>
+//           <Routes>
+//             <Route path="/" element={<HomePageMobile />} />
+//           </Routes>
+//       </div>
+//   );
+// }
