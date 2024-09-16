@@ -37,6 +37,7 @@ export default function HomePageMobile() {
   const hideContact = () => setShowContact(false);
 
   const audioAnoush = new Audio("Anousch_love.mp3");
+  const audioAnoushHi = new Audio("AnoushHi.mp3");
   const audioPat = new Audio("Pat_love.mp3");
   const audioGuitar = new Audio("guitar.mp3");
   const audioBike = new Audio("bike.mp3");
@@ -46,6 +47,12 @@ export default function HomePageMobile() {
   //-----------------AUDIOS--------------------------------
   const playAudioAnoush = () => {
     audioAnoush.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  const playAudioAnoushHi = () => {
+    audioAnoushHi.play().catch((error) => {
       console.error("Audio play failed:", error);
     });
   };
@@ -79,7 +86,6 @@ export default function HomePageMobile() {
       console.error("Audio play failed:", error);
     });
   };
-
   //-----------------LYRICS--------------------------------
   const lyricsUrl = (doc) => {
     return `/song_list_jpegs/${doc}.jpg`;
@@ -136,7 +142,7 @@ export default function HomePageMobile() {
     <>
       <Container fluid className="bg-black" style={{ overflowX: "hidden" }}>
         <Row>
-          <div className="mt-3 mb-2 text-center fs-1 text-white">
+          <div className="mt-3 mb-2 text-center fs-3 text-white">
             ⭐️Welkom Muziek Routers!⭐️
           </div>
         </Row>
@@ -209,6 +215,19 @@ export default function HomePageMobile() {
             }}
           ></div>
           <div
+            onClick={playAudioAnoushHi}
+            style={{
+              position: "absolute",
+              top: "81%",
+              left: "30%",
+              width: "35%",
+              height: "10%",
+              cursor: "pointer",
+              // backgroundColor: "pink",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
             onClick={playAudioPat}
             style={{
               position: "absolute",
@@ -234,6 +253,8 @@ export default function HomePageMobile() {
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
+        </Row>
+        <Row className="fs-1 mt-5 mb-5 bk-black" style={{height:"150px"}}>
         </Row>
       </Container>
       <Modal show={showMenu} onHide={hideMenu}>
@@ -309,7 +330,7 @@ export default function HomePageMobile() {
           <div>
             <Button
               variant="secondary"
-              className="fs-6 fw-b ms-3"
+              className="fs-6 fw-b ms-2"
               onClick={() => {
                 dispatch(resetFavData());
               }}
@@ -321,8 +342,7 @@ export default function HomePageMobile() {
 
         {songList.map((song) => {
           return (
-            <Row key={song.id} className="align-items-center ms-2 mb-2">
-              <Col md={8} className="text-start">
+            <Row key={song.id} className="align-items-center ms-2 mb-2 me-2">
                 <Button
                   variant={getRandomColor()}
                   className="text-light fs-5 fw-b text-start w-100"
@@ -337,7 +357,6 @@ export default function HomePageMobile() {
                 >
                   {song.title} - {song.artist}
                 </Button>
-              </Col>
               {!findUserData(song.id) ? (
                 <NoLike key={song.id} id={song.id} />
               ) : (

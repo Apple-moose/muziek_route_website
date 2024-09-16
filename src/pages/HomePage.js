@@ -37,6 +37,7 @@ export default function HomePage() {
   const hideContact = () => setShowContact(false);
 
   const audioAnoush = new Audio("Anousch_love.mp3");
+  const audioAnoushHi = new Audio("AnoushHi.mp3");
   const audioPat = new Audio("Pat_love.mp3");
   const audioGuitar = new Audio("guitar.mp3");
   const audioBike = new Audio("bike.mp3");
@@ -46,6 +47,12 @@ export default function HomePage() {
   //-----------------AUDIOS--------------------------------
   const playAudioAnoush = () => {
     audioAnoush.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
+  const playAudioAnoushHi = () => {
+    audioAnoushHi.play().catch((error) => {
       console.error("Audio play failed:", error);
     });
   };
@@ -165,7 +172,7 @@ export default function HomePage() {
               width: "55%",
               height: "10%",
               cursor: "pointer",
-              //   backgroundColor: "grey",
+              // backgroundColor: "grey",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -178,7 +185,7 @@ export default function HomePage() {
               width: "30%",
               height: "10%",
               cursor: "pointer",
-              //   backgroundColor: "purple",
+              // backgroundColor: "purple",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -191,7 +198,7 @@ export default function HomePage() {
               width: "27%",
               height: "80%",
               cursor: "pointer",
-              //   backgroundColor: "red",
+              // backgroundColor: "red",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -204,7 +211,20 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              //   backgroundColor: "yellow",
+              // backgroundColor: "yellow",
+              backgroundColor: "rgba(0,0,0,0)",
+            }}
+          ></div>
+          <div
+            onClick={playAudioAnoushHi}
+            style={{
+              position: "absolute",
+              top: "81%",
+              left: "30%",
+              width: "35%",
+              height: "10%",
+              cursor: "pointer",
+              // backgroundColor: "pink",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -217,7 +237,7 @@ export default function HomePage() {
               width: "21%",
               height: "60%",
               cursor: "pointer",
-              //   backgroundColor: "blue",
+              // backgroundColor: "blue",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -230,10 +250,12 @@ export default function HomePage() {
               width: "25%",
               height: "50%",
               cursor: "pointer",
-              //   backgroundColor: "green",
+              // backgroundColor: "green",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
+        </Row>
+        <Row className="fs-1 mt-5 mb-5 bk-black" style={{height:"150px"}}>
         </Row>
       </Container>
       <Modal show={showMenu} onHide={hideMenu}>
