@@ -13,7 +13,7 @@ const NoLike = (props) => {
 
   return (
     <>
-      <Col md={2} className="text-center">
+    <Col xs={5} className="text-center">
         <IoMdThumbsUp
           style={{
             width: "2.5rem",
@@ -24,7 +24,8 @@ const NoLike = (props) => {
             dispatch(addFav(props.id));
           }}
         />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </Col>
+        <Col xs={5} className="text-center">
         <IoMdThumbsDown
           style={{
             width: "2.5rem",
@@ -35,7 +36,7 @@ const NoLike = (props) => {
             dispatch(dislikeFav(props.id));
           }}
         />
-      </Col>
+        </Col>
     </>
   );
 };
@@ -46,10 +47,9 @@ const Like = (props) => {
 
   return (
     <>
-      <Col md={2} className="text-center">
         <IoMdThumbsUp
           style={{
-            width: "4rem",
+            width: "5rem",
             height: "auto",
             color: "green",
           }}
@@ -57,7 +57,6 @@ const Like = (props) => {
             dispatch(resetFav(props.id));
           }}
         />
-      </Col>
     </>
   );
 };
@@ -68,11 +67,9 @@ const DisLike = (props) => {
 
   return (
     <>
-      <Col md={2}></Col>
-      <Col md={2} className="text-center">
         <IoMdThumbsDown
           style={{
-            width: "3.5rem",
+            width: "5rem",
             height: "auto",
             color: "Red",
           }}
@@ -80,7 +77,6 @@ const DisLike = (props) => {
             dispatch(resetFav(props.id));
           }}
         />
-      </Col>
     </>
   );
 };

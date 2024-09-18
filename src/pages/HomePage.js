@@ -114,12 +114,12 @@ export default function HomePage() {
 
   //-----------------COLORS--------------------------------
 
-  const buttonColors = ["primary", "warning", "success", "danger", "info"];
+  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
 
-  const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * buttonColors.length);
-    return buttonColors[randomIndex];
-  };
+  // const getRandomColor = () => {
+  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
+  //   return buttonColors[randomIndex];
+  // };
 
   //-----------------DEPENDENCIES-------------------------------
 
@@ -141,7 +141,12 @@ export default function HomePage() {
 
   return (
     <>
-      <Container fluid className="bg-black" style={{ overflowX: "hidden" }}>
+      <Container
+        fluid
+        className="bg-black p-0 m-0"
+        marginLeft="0"
+        style={{ overflowX: "hidden", padding: 0, margin: 0 }}
+      >
         <Row className="mb-5 me-0 text-white text-center">
           <Col md={1} className="text-center ms-2 mb-2 mt-4 fs-1">
             <Button
@@ -255,9 +260,14 @@ export default function HomePage() {
             }}
           ></div>
         </Row>
-        <Row className="fs-1 mt-5 mb-5 bk-black" style={{height:"150px"}}>
-        </Row>
+        <Row
+          className="fs-1 mt-5 mb-5 bk-black"
+          style={{ height: "150px" }}
+        ></Row>
       </Container>
+
+      {/* -o-o-o-o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
+
       <Modal show={showMenu} onHide={hideMenu}>
         <Modal.Header closeButton className="d-flex justify-content-center">
           <Modal.Title className="fs-1 fw-b">Where to?</Modal.Title>
@@ -312,8 +322,19 @@ export default function HomePage() {
             </Button>
           </Row>
         </Modal.Body>
-        <Modal.Body className="text-end">
-          <Button variant="secondary" onClick={hideMenu}>
+        <Modal.Body className="d-flex justify-content-between align-items-center">
+          <div>
+            Powered by Apple
+            <Image
+              size={30}
+              src="Moose-Icon(Small).png"
+              alt="logo not found!"
+              className="text-left"
+              style={{ width: "10%", height: "auto" }}
+            />
+            Moose
+          </div>
+          <Button variant="secondary" className="ms-auto" onClick={hideMenu}>
             Close
           </Button>
         </Modal.Body>
@@ -325,13 +346,13 @@ export default function HomePage() {
         <Modal.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column w-100">
             <Modal.Title className="fs-2 fw-b">
-              Repertory: (click on title for lyrics)
+              Song List: (click on title for lyrics)
             </Modal.Title>
           </div>
           <div>
             <Button
               variant="secondary"
-              className="fs-4 fw-b ms-3"
+              className="fs-4 fw-b me-4 ms-3"
               onClick={() => {
                 dispatch(resetFavData());
               }}
@@ -346,7 +367,7 @@ export default function HomePage() {
             <Row key={song.id} className="align-items-center ms-2 mb-2">
               <Col md={8} className="text-start fs-1">
                 <Button
-                  variant={getRandomColor()}
+                  variant={findUserData(song.id)?.color || "secondary"}
                   className="text-light fs-4 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
@@ -547,13 +568,41 @@ export default function HomePage() {
             Back to List
           </Button>
         </Row>
-        <Modal.Body>
+        <Row>
+          <Modal.Body>
+            <Image
+              src="bio_anousch.jpg"
+              alt="oh oh...image not found!"
+              className="text-center"
+              style={{ width: "100%", height: "auto" }}
+            />
+          </Modal.Body>
+        </Row>
+        <div>
           <Image
-            src="bio_anousch.jpg"
-            alt="oh oh...image not found!"
+            size={30}
+            src="pat_spaanse_gitaar.jpg"
+            alt="logo not found!"
             style={{ width: "100%", height: "auto" }}
           />
-        </Modal.Body>
+        </div>
+        <Row className="justify-content-center">
+          <Col xs={4} className="text-center">
+            <div>
+              <Image
+                size={10}
+                src="Moose-Icon(Small).png"
+                alt="logo not found!"
+                className="text-left mt-4"
+                style={{ width: "70%", height: "auto" }}
+              />
+            </div>
+          </Col>
+          <Col xs={8} className="mt-4 fs-6">
+            Apple-Moose: <b>(github.com/Apple-moose)</b>&nbsp;&nbsp; em@il:{" "}
+            <b>patrissio@gmail.com</b>
+          </Col>
+        </Row>
         <Modal.Body className="text-end">
           <Button
             variant="secondary"

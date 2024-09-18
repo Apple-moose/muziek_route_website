@@ -113,12 +113,12 @@ export default function HomePageMobile() {
 
   //-----------------COLORS--------------------------------
 
-  const buttonColors = ["primary", "warning", "success", "danger", "info"];
+  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
 
-  const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * buttonColors.length);
-    return buttonColors[randomIndex];
-  };
+  // const getRandomColor = () => {
+  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
+  //   return buttonColors[randomIndex];
+  // };
 
   //-----------------DEPENDENCIES-------------------------------
 
@@ -140,13 +140,18 @@ export default function HomePageMobile() {
 
   return (
     <>
-      <Container fluid className="bg-black" style={{ overflowX: "hidden" }}>
+      <Container
+        fluid
+        className="bg-black p-0 m-0"
+        marginleft="0"
+        style={{ overflowX: "hidden", padding: 0, margin: 0 }}
+      >
         <Row>
-          <div className="mt-3 mb-2 text-center fs-3 text-white">
+          <div className="mt-5 mb-4 text-center fs-3 text-white">
             ⭐️Welkom Muziek Routers!⭐️
           </div>
         </Row>
-        <Row className="mb-4 mt-2 me-0 text-white text-center">
+        <Row className="mb-4 mt-4 me-0 text-white text-center">
           <Button
             type="button"
             onClick={onClickShowMenu}
@@ -155,9 +160,12 @@ export default function HomePageMobile() {
             <BsFillGrid3X3GapFill size={50} />
           </Button>
         </Row>
-        <Row style={{ position: "relative", width: "100%", margin: "0" }}>
+        <Row
+          className="p-0 m-0"
+          style={{ position: "relative", width: "100%" }}
+        >
           <Image
-            src="V_M_fiets.jpg"
+            src="V_M_fiets_mobile.jpg"
             alt="oh oh...not found!"
             className="background"
             style={{ width: "100%", height: "auto" }}
@@ -167,11 +175,11 @@ export default function HomePageMobile() {
             style={{
               position: "absolute",
               top: "0%",
-              left: "5%",
-              width: "55%",
+              left: "10%",
+              width: "45%",
               height: "10%",
               cursor: "pointer",
-              //   backgroundColor: "grey",
+              // backgroundColor: "grey",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -180,11 +188,11 @@ export default function HomePageMobile() {
             style={{
               position: "absolute",
               top: "0%",
-              right: "5%",
+              right: "8%",
               width: "30%",
               height: "10%",
               cursor: "pointer",
-              //   backgroundColor: "purple",
+              // backgroundColor: "purple",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -195,9 +203,9 @@ export default function HomePageMobile() {
               top: "11%",
               left: "2%",
               width: "27%",
-              height: "80%",
+              height: "50%",
               cursor: "pointer",
-              //   backgroundColor: "red",
+              // backgroundColor: "red",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -208,9 +216,9 @@ export default function HomePageMobile() {
               top: "20%",
               left: "30%",
               width: "21%",
-              height: "60%",
+              height: "33%",
               cursor: "pointer",
-              //   backgroundColor: "yellow",
+              // backgroundColor: "yellow",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -218,7 +226,7 @@ export default function HomePageMobile() {
             onClick={playAudioAnoushHi}
             style={{
               position: "absolute",
-              top: "81%",
+              top: "54%",
               left: "30%",
               width: "35%",
               height: "10%",
@@ -234,9 +242,9 @@ export default function HomePageMobile() {
               top: "12%",
               left: "52%",
               width: "21%",
-              height: "60%",
+              height: "40%",
               cursor: "pointer",
-              //   backgroundColor: "blue",
+              // backgroundColor: "blue",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
@@ -244,19 +252,24 @@ export default function HomePageMobile() {
             onClick={playAudioBike}
             style={{
               position: "absolute",
-              bottom: "1%",
+              bottom: "32%",
               right: "1%",
               width: "25%",
-              height: "50%",
+              height: "30%",
               cursor: "pointer",
-              //   backgroundColor: "green",
+              // backgroundColor: "green",
               backgroundColor: "rgba(0,0,0,0)",
             }}
           ></div>
         </Row>
-        <Row className="fs-1 mt-5 mb-5 bk-black" style={{height:"150px"}}>
-        </Row>
+        <Row
+          className="fs-1 mt-5 mb-5 bk-black"
+          style={{ height: "150px" }}
+        ></Row>
       </Container>
+
+      {/* -o-o-o-o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
+
       <Modal show={showMenu} onHide={hideMenu}>
         <Modal.Header closeButton className="d-flex justify-content-center">
           <Modal.Title className="fs-1 fw-b">Where to?</Modal.Title>
@@ -311,8 +324,19 @@ export default function HomePageMobile() {
             </Button>
           </Row>
         </Modal.Body>
-        <Modal.Body className="text-end">
-          <Button variant="secondary" onClick={hideMenu}>
+        <Modal.Body className="d-flex justify-content-between align-items-center">
+          <div>
+            Powered by Apple
+            <Image
+              size={30}
+              src="Moose-Icon(Small).png"
+              alt="logo not found!"
+              className="text-left"
+              style={{ width: "10%", height: "auto" }}
+            />
+            Moose
+          </div>
+          <Button variant="secondary" className="ms-auto" onClick={hideMenu}>
             Close
           </Button>
         </Modal.Body>
@@ -321,10 +345,21 @@ export default function HomePageMobile() {
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showSongs} onHide={hideSongs} className="modalListMobile">
+        <Row className="ms-2 me-3 text-end">
+          <Button
+            variant="warning"
+            onClick={() => {
+              hideContact();
+              onClickShowMenu();
+            }}
+          >
+            Back to Menu
+          </Button>
+        </Row>
         <Modal.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column w-100">
             <Modal.Title className="fs-4 fw-b">
-              Repertory: <p>(click on title for lyrics)</p>
+              Song List: <p>(click on title for lyrics)</p>
             </Modal.Title>
           </div>
           <div>
@@ -342,9 +377,10 @@ export default function HomePageMobile() {
 
         {songList.map((song) => {
           return (
-            <Row key={song.id} className="align-items-center ms-2 mb-2 me-2">
+            <>
+              <Row key={song.id} className="ms-2 mb-2 me-2">
                 <Button
-                  variant={getRandomColor()}
+                  variant={findUserData(song.id)?.color || "secondary"}
                   className="text-light fs-5 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
@@ -357,23 +393,30 @@ export default function HomePageMobile() {
                 >
                   {song.title} - {song.artist}
                 </Button>
-              {!findUserData(song.id) ? (
-                <NoLike key={song.id} id={song.id} />
-              ) : (
-                fav.map((u) => {
-                  if (u.id === song.id) {
-                    if (u.like === 1 && u.dislike === 0) {
-                      return <Like key={`like-${u.id}`} id={song.id} />;
-                    } else if (u.like === 0 && u.dislike === 1) {
-                      return <DisLike key={`dislike-${u.id}`} id={song.id} />;
-                    } else if (u.like === 0 && u.dislike === 0) {
-                      return <NoLike key={`dislike-${u.id}`} id={song.id} />;
+              </Row>
+
+              <Row
+                key={`likes-${song.id}`}
+                className="d-flex w-90 justify-content-center mb-2"
+              >
+                {!findUserData(song.id) ? (
+                  <NoLike key={song.id} id={song.id} />
+                ) : (
+                  fav.map((u) => {
+                    if (u.id === song.id) {
+                      if (u.like === 1 && u.dislike === 0) {
+                        return <Like key={`like-${u.id}`} id={song.id} />;
+                      } else if (u.like === 0 && u.dislike === 1) {
+                        return <DisLike key={`dislike-${u.id}`} id={song.id} />;
+                      } else if (u.like === 0 && u.dislike === 0) {
+                        return <NoLike key={`dislike-${u.id}`} id={song.id} />;
+                      }
                     }
-                  }
-                  return null;
-                })
-              )}
-            </Row>
+                    return null;
+                  })
+                )}
+              </Row>
+            </>
           );
         })}
 
@@ -483,7 +526,7 @@ export default function HomePageMobile() {
               onClickShowMenu();
             }}
           >
-            Back to List
+            Back to Menu
           </Button>
         </Row>
         <Modal.Body>
@@ -518,7 +561,7 @@ export default function HomePageMobile() {
               onClickShowMenu();
             }}
           >
-            Back to List
+            Back to Menu
           </Button>
         </Row>
         <Modal.Body>
@@ -549,16 +592,46 @@ export default function HomePageMobile() {
               onClickShowMenu();
             }}
           >
-            Back to List
+            Back to Menu
           </Button>
         </Row>
-        <Modal.Body>
+        <Row>
+          <Modal.Body>
+            <Image
+              src="bio_anousch.jpg"
+              alt="oh oh...image not found!"
+              className="text-center"
+              style={{ width: "100%", height: "auto" }}
+            />
+          </Modal.Body>
+        </Row>
+        <div>
           <Image
-            src="bio_anousch.jpg"
-            alt="oh oh...image not found!"
+            size={30}
+            src="pat_spaanse_gitaar.jpg"
+            alt="logo not found!"
             style={{ width: "100%", height: "auto" }}
           />
-        </Modal.Body>
+        </div>
+        <Row className="justify-content-center">
+          <Col xs={4} className="text-center">
+            <div>
+              <Image
+                size={10}
+                src="Moose-Icon(Small).png"
+                alt="logo not found!"
+                className="text-left mt-4"
+                style={{ width: "70%", height: "auto" }}
+              />
+            </div>
+          </Col>
+          <Col xs={8} className="mt-4 fs-6">
+            Apple-Moose: <b>(github.com/Apple-moose)</b>
+            <p>
+              em@il: <b>patrissio@gmail.com</b>
+            </p>
+          </Col>
+        </Row>
         <Modal.Body className="text-end">
           <Button
             variant="secondary"

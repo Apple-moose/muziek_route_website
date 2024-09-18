@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   favArray: [
-    // form is: { id: 0, like: 0, dislike: 0},
+    // form is: { id: 0, like: 0, dislike: 0 color: ""},
   ],
 };
 
@@ -29,6 +29,7 @@ const favSlice = createSlice({
                 id: songId,
                 like: 1,
                 dislike: 0,
+                color: "success",
               };
             } else {
               return { ...fav };
@@ -38,6 +39,7 @@ const favSlice = createSlice({
             id: songId,
             like: 1,
             dislike: 0,
+            color: "success",
           });
       //LocalStorage function______________________________
       localStorage.setItem("favData", JSON.stringify(state.favArray));
@@ -51,7 +53,13 @@ const favSlice = createSlice({
       idArray.includes(songId)
         ? (state.favArray = state.favArray.map((fav) => {
             if (fav.id === songId) {
-              return { ...fav, id: songId, like: 0, dislike: 1, color: "red" };
+              return {
+                ...fav,
+                id: songId,
+                like: 0,
+                dislike: 1,
+                color: "danger",
+              };
             } else {
               return { ...fav };
             }
@@ -60,7 +68,7 @@ const favSlice = createSlice({
             id: songId,
             like: 0,
             dislike: 1,
-            color: "red",
+            color: "danger",
           });
       //LocalStorage function______________________________
       localStorage.setItem("favData", JSON.stringify(state.favArray));
@@ -74,7 +82,7 @@ const favSlice = createSlice({
       idArray.includes(songId)
         ? (state.favArray = state.favArray.map((fav) => {
             if (fav.id === songId) {
-              return { ...fav, like: 0, dislike: 0, color: "grey" };
+              return { ...fav, like: 0, dislike: 0, color: "secondary" };
             } else {
               return { ...fav };
             }
@@ -83,6 +91,7 @@ const favSlice = createSlice({
             id: songId,
             like: 0,
             dislike: 0,
+            color: "secondary",
           });
       //LocalStorage function______________________________
       localStorage.setItem("favData", JSON.stringify(state.favArray));
@@ -96,6 +105,7 @@ const favSlice = createSlice({
   },
 });
 
-export const { addFav, dislikeFav, resetFav, resetFavData, bootstrapUser } = favSlice.actions;
+export const { addFav, dislikeFav, resetFav, resetFavData, bootstrapUser } =
+  favSlice.actions;
 
 export default favSlice.reducer;
