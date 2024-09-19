@@ -113,12 +113,12 @@ export default function HomePageMobile() {
 
   //-----------------COLORS--------------------------------
 
-  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
+  const buttonColors = ["primary", "warning", "success", "danger", "info"];
 
-  // const getRandomColor = () => {
-  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
-  //   return buttonColors[randomIndex];
-  // };
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * buttonColors.length);
+    return buttonColors[randomIndex];
+  };
 
   //-----------------DEPENDENCIES-------------------------------
 
@@ -345,20 +345,20 @@ export default function HomePageMobile() {
       {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showSongs} onHide={hideSongs} className="modalListMobile">
-        <Row className="ms-2 me-3 text-end">
+        <Row className="ms-2 me-2">
           <Button
             variant="warning"
             onClick={() => {
-              hideContact();
+              hideSongs();
               onClickShowMenu();
             }}
           >
             Back to Menu
           </Button>
         </Row>
-        <Modal.Header className="d-flex justify-content-between align-items-center">
+        <Modal.Header className="d-flex mb-3 justify-content-between align-items-center">
           <div className="d-flex flex-column w-100">
-            <Modal.Title className="fs-4 fw-b">
+            <Modal.Title className="fs-6 fw-b">
               Song List: <p>(click on title for lyrics)</p>
             </Modal.Title>
           </div>
@@ -378,10 +378,10 @@ export default function HomePageMobile() {
         {songList.map((song) => {
           return (
             <>
-              <Row key={song.id} className="ms-2 mb-2 me-2">
+              <Row key={song.id} className="ms-2 me-2">
                 <Button
-                  variant={findUserData(song.id)?.color || "secondary"}
-                  className="text-light fs-5 fw-b text-start w-100"
+                  variant={findUserData(song.id)?.color || "outline-secondary"}
+                  className="text-light fs-6 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                   }}
@@ -397,7 +397,7 @@ export default function HomePageMobile() {
 
               <Row
                 key={`likes-${song.id}`}
-                className="d-flex w-90 justify-content-center mb-2"
+                className="d-flex w-90 justify-content-center mb-1 mt-1"
               >
                 {!findUserData(song.id) ? (
                   <NoLike key={song.id} id={song.id} />
@@ -531,7 +531,7 @@ export default function HomePageMobile() {
         </Row>
         <Modal.Body>
           <Image
-            src="bio_p_martel.jpg"
+            src="bio_pat_website.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />
@@ -566,7 +566,7 @@ export default function HomePageMobile() {
         </Row>
         <Modal.Body>
           <Image
-            src="bio_anousch.jpg"
+            src="V_M_frank.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />
@@ -584,7 +584,7 @@ export default function HomePageMobile() {
       </Modal>
 
       <Modal show={showContact} onHide={hideContact} className="modalBioMobile">
-        <Row className="ms-2 me-3 text-end">
+        <Row className="ms-2 mt-1 me-2 text-end">
           <Button
             variant="warning"
             onClick={() => {
@@ -598,7 +598,7 @@ export default function HomePageMobile() {
         <Row>
           <Modal.Body>
             <Image
-              src="bio_anousch.jpg"
+              src="V_M_frank.jpg"
               alt="oh oh...image not found!"
               className="text-center"
               style={{ width: "100%", height: "auto" }}
@@ -620,12 +620,12 @@ export default function HomePageMobile() {
                 size={10}
                 src="Moose-Icon(Small).png"
                 alt="logo not found!"
-                className="text-left mt-4"
+                className="mt-5"
                 style={{ width: "70%", height: "auto" }}
               />
             </div>
           </Col>
-          <Col xs={8} className="mt-4 fs-6">
+          <Col xs={8} className="mt-4">
             Apple-Moose: <b>(github.com/Apple-moose)</b>
             <p>
               em@il: <b>patrissio@gmail.com</b>

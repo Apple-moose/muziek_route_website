@@ -39,6 +39,8 @@
 }
 
 .modalList .modal-content {
+  background-color: black;
+  color: white;
   width: 80vw; // Full viewport width
   height: auto; // Full viewport height
   border: 5px; // Optional: Remove borders for a cleaner look
@@ -62,15 +64,18 @@
 }
 
 .modalBio .modal-content {
+  background-color: black;
   width: 80vw;
   height: auto;
   border: none;
   border-radius: 0;
   display: flex;
   flex-direction: column;
+  color: white;
 }
 
 .modalBio .modal-body {
+  // background-color: black;
   flex: 1;
   overflow: auto;
 }

@@ -367,7 +367,7 @@ export default function HomePage() {
             <Row key={song.id} className="align-items-center ms-2 mb-2">
               <Col md={8} className="text-start fs-1">
                 <Button
-                  variant={findUserData(song.id)?.color || "secondary"}
+                  variant={findUserData(song.id)?.color || "outline-secondary"}
                   className="text-light fs-4 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
@@ -508,7 +508,7 @@ export default function HomePage() {
         </Row>
         <Modal.Body>
           <Image
-            src="bio_p_martel.jpg"
+            src="bio_pat_website.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />
@@ -525,7 +525,7 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showBioAnousch} onHide={hideBioAnousch}>
+      <Modal show={showBioAnousch} onHide={hideBioAnousch} className="modalBio">
         <Row className="ms-2 me-3 text-end">
           <Button
             variant="warning"
@@ -539,7 +539,7 @@ export default function HomePage() {
         </Row>
         <Modal.Body>
           <Image
-            src="bio_anousch.jpg"
+            src="V_M_frank.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />
@@ -556,7 +556,7 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showContact} onHide={hideContact}>
+      <Modal show={showContact} onHide={hideContact} className="modalBio">
         <Row className="ms-2 me-3 text-end">
           <Button
             variant="warning"
@@ -571,7 +571,7 @@ export default function HomePage() {
         <Row>
           <Modal.Body>
             <Image
-              src="bio_anousch.jpg"
+              src="V_M_frank.jpg"
               alt="oh oh...image not found!"
               className="text-center"
               style={{ width: "100%", height: "auto" }}
@@ -598,9 +598,11 @@ export default function HomePage() {
               />
             </div>
           </Col>
-          <Col xs={8} className="mt-4 fs-6">
-            Apple-Moose: <b>(github.com/Apple-moose)</b>&nbsp;&nbsp; em@il:{" "}
-            <b>patrissio@gmail.com</b>
+          <Col xs={8} className="mt-5 fs-2">
+            Apple-Moose: <b>(github.com/Apple-moose)</b>
+            <p>
+              em@il: <b>patrissio@gmail.com</b>
+            </p>
           </Col>
         </Row>
         <Modal.Body className="text-end">
