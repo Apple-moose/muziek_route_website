@@ -1,10 +1,6 @@
 import "../style/global.scss";
 import { useDispatch } from "react-redux";
-import {
-  addFav,
-  dislikeFav,
-  resetFav,
-} from "../store/favorites/slice";
+import { addFav, dislikeFav, resetFav } from "../store/favorites/slice";
 import { IoMdThumbsDown, IoMdThumbsUp } from "react-icons/io";
 import { Col } from "react-bootstrap";
 
@@ -86,3 +82,35 @@ const DisLike = (props) => {
   );
 };
 export { DisLike };
+
+const LikeList = () => {
+  return (
+    <>
+      <IoMdThumbsUp
+        style={{
+          width: "2rem",
+          height: "auto",
+          marginBottom: "9",
+          color: "green",
+        }}
+      />
+    </>
+  );
+};
+export { LikeList };
+
+const DisLikeList = () => {
+  return (
+    <>
+      <IoMdThumbsDown
+        style={{
+          width: "2rem",
+          height: "auto",
+          marginBottom: "2",
+          color: "Red",
+        }}
+      />
+    </>
+  );
+};
+export { DisLikeList };

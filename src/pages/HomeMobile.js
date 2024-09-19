@@ -2,15 +2,36 @@ import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../style/globalMobile.scss";
 import { selectFav } from "../store/favorites/selectors.js";
+import {
+  selectSongList,
+  selectSongsByTitle,
+  selectSongsByArtist,
+} from "../store/songs/selectors.js";
 import { bootstrapUser, resetFavData } from "../store/favorites/slice.js";
-import { songList } from "../components/songList";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { NoLike, Like, DisLike } from "../components/likeButtonsMobile";
+import {
+  NoLike,
+  Like,
+  DisLike,
+  LikeListMobile,
+  DisLikeListMobile,
+} from "../components/likeButtonsMobile";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
-import { Container, Col, Image, Row, Button, Modal } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Image,
+  Row,
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
 
 export default function HomePageMobile() {
   const fav = useSelector(selectFav);
+  const songList = useSelector(selectSongList);
+  const songsByTitle = useSelector(selectSongsByTitle);
+  const songsByArtist = useSelector(selectSongsByArtist);
   const dispatch = useDispatch();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -22,6 +43,7 @@ export default function HomePageMobile() {
   const [chosenSong, setChosenSong] = useState("");
   const [nextSong, setNextSong] = useState("");
   const [previousSong, setPreviousSong] = useState("");
+  const [listSorting, setListSorting] = useState("id");
   const onClickShowMenu = () => setShowMenu(true);
   const onClickShowSongs = () => setShowSongs(true);
   const onClickShowLyrics = () => setShowLyrics(true);
@@ -91,26 +113,25 @@ export default function HomePageMobile() {
     return `/song_list_jpegs/${doc}.jpg`;
   };
 
-  const findNextSong = (id) => {
-    let nextSongId = Number(id) + 1;
-    const song = songList.find(
-      (s) => nextSongId.toString() === s.id.toString()
-    );
-    setNextSong(song);
-  };
-
-  const findPreviousSong = (id) => {
-    let nextSongId = Number(id) - 1;
-    const song = songList.find(
-      (s) => nextSongId.toString() === s.id.toString()
-    );
-    setPreviousSong(song);
-  };
-
   const findUserData = (favId) => {
     return fav.find((u) => u.id === favId);
   };
 
+  //--------------Lyrics SORTING---------------------------
+
+  const sortedSongList = (s) => {
+    if (s === "id") return songList;
+    if (s === "title") return songsByTitle;
+    if (s === "artist") return songsByArtist;
+    if (s === "favorites") return findLikes();
+    else return songList;
+  };
+
+  const findLikes = () => {
+    let array1 = fav.filter((s) => s.like === 1);
+    let likedSongs = array1.map((t) => songList.find((i) => i.id === t.id));
+    return likedSongs.filter((song) => song);
+  };
   //-----------------COLORS--------------------------------
 
   // const buttonColors = ["primary", "warning", "success", "danger", "info"];
@@ -121,19 +142,36 @@ export default function HomePageMobile() {
   // };
 
   //-----------------DEPENDENCIES-------------------------------
-
   useEffect(() => {
+    const findNextSong = (id) => {
+      let nextSongId = Number(id) + 1;
+      const song = songList.find(
+        (s) => nextSongId.toString() === s.id.toString()
+      );
+      setNextSong(song);
+    };
+
+    const findPreviousSong = (id) => {
+      let nextSongId = Number(id) - 1;
+      const song = songList.find(
+        (s) => nextSongId.toString() === s.id.toString()
+      );
+      setPreviousSong(song);
+    };
+
     if (chosenSong) {
       findNextSong(chosenSong.id);
-
       if (chosenSong.id !== 1) {
         findPreviousSong(chosenSong.id);
       }
     }
-  }, [chosenSong]);
+  }, [chosenSong, songList]);
 
   useEffect(() => {
     dispatch(bootstrapUser());
+    !localStorage.songListSorting
+      ? setListSorting("id")
+      : setListSorting(localStorage.getItem("songListSorting"));
   }, [dispatch]);
 
   //-----------------RENDER--------------------------------
@@ -356,7 +394,7 @@ export default function HomePageMobile() {
             Back to Menu
           </Button>
         </Row>
-        <Modal.Header className="d-flex mb-3 justify-content-between align-items-center">
+        <Modal.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column w-100">
             <Modal.Title className="fs-6 fw-b">
               Song List: <p>(click on title for lyrics)</p>
@@ -372,13 +410,29 @@ export default function HomePageMobile() {
             >
               Reset
             </Button>
-          </div>
+          </div>{" "}
+        </Modal.Header>
+        <Modal.Header className="mb-3">
+          <Form.Select
+            id="sortList"
+            name="sortSongList"
+            value={listSorting}
+            onChange={(e) => {
+              setListSorting(e.target.value);
+              localStorage.setItem("songListSorting", e.target.value);
+            }}
+          >
+            <option value="id">Sort list by:</option>
+            <option value="title">List by Song Title</option>
+            <option value="artist">List by Artist Name</option>
+            <option value="favorites">List only your Favorites</option>
+          </Form.Select>
         </Modal.Header>
 
-        {songList.map((song) => {
+        {sortedSongList(listSorting).map((song) => {
           return (
-            <>
-              <Row key={song.id} className="ms-2 me-2">
+            <div key={`s-${song.id}`}>
+              <Row className="ms-2 me-2">
                 <Button
                   variant={findUserData(song.id)?.color || "outline-secondary"}
                   className="text-light fs-6 fw-b text-start w-100"
@@ -416,7 +470,7 @@ export default function HomePageMobile() {
                   })
                 )}
               </Row>
-            </>
+            </div>
           );
         })}
 
@@ -453,16 +507,31 @@ export default function HomePageMobile() {
         className="modalLyricsMobile"
       >
         <Modal.Header closeButton className="text-center">
-          <Modal.Title className="fs-2 fw-b w-100">
-            {chosenSong.title} by {chosenSong.artist}
+          <Modal.Title className="fs-3 fw-b w-100">
+            <Row>
+              <div>
+                {findUserData(chosenSong.id)?.color === "success" ? (
+                  <>
+                    <LikeListMobile />
+                    &nbsp;
+                  </>
+                ) : findUserData(chosenSong.id)?.color === "danger" ? (
+                  <>
+                    <DisLikeListMobile />
+                    &nbsp;
+                  </>
+                ) : null}
+                {chosenSong.title} by {chosenSong.artist}
+              </div>
+            </Row>
           </Modal.Title>
         </Modal.Header>
-        <Row className="ms-2 me-2">
+        <Row className="ms-2 me-2 mt-1">
           <Col md={4} className="text-start">
             {!chosenSong ? null : chosenSong.id.toString() !== "1" ? (
               <span>
                 <IoMdSkipBackward
-                  size={65}
+                  size={45}
                   color="orange"
                   onClick={() => {
                     setChosenSong(previousSong);
@@ -472,7 +541,7 @@ export default function HomePageMobile() {
               </span>
             ) : null}
           </Col>
-          <Col md={4} className="text-center mt-3">
+          <Col md={4} className="text-center">
             <Button
               variant="warning"
               onClick={() => {
@@ -485,14 +554,18 @@ export default function HomePageMobile() {
           </Col>
           <Col md={4} className="text-end">
             {" "}
-            {nextSong ? <b>{nextSong.title}</b> : null}
-            <IoMdSkipForward
-              size={65}
-              color="orange"
-              onClick={() => {
-                setChosenSong(nextSong);
-              }}
-            />
+            {nextSong ? (
+              <>
+                <b>{nextSong.title}</b>
+                <IoMdSkipForward
+                  size={45}
+                  color="orange"
+                  onClick={() => {
+                    setChosenSong(nextSong);
+                  }}
+                />{" "}
+              </>
+            ) : null}
           </Col>
         </Row>
         <Modal.Body>

@@ -20,15 +20,3 @@ export default function App() {
     </div>
   );
 }
-
-//For Mobile Sizing-------------------------------------
-
-// export default function App() {
-//   return (
-//         <div>
-//           <Routes>
-//             <Route path="/" element={<HomePageMobile />} />
-//           </Routes>
-//       </div>
-//   );
-// }

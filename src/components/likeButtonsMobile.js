@@ -1,10 +1,6 @@
 import "../style/global.scss";
 import { useDispatch } from "react-redux";
-import {
-  addFav,
-  dislikeFav,
-  resetFav,
-} from "../store/favorites/slice";
+import { addFav, dislikeFav, resetFav } from "../store/favorites/slice";
 import { IoMdThumbsDown, IoMdThumbsUp } from "react-icons/io";
 import { Col } from "react-bootstrap";
 
@@ -13,7 +9,7 @@ const NoLike = (props) => {
 
   return (
     <>
-    <Col xs={5} className="text-center">
+      <Col xs={5} className="text-center">
         <IoMdThumbsUp
           style={{
             width: "2.5rem",
@@ -24,8 +20,8 @@ const NoLike = (props) => {
             dispatch(addFav(props.id));
           }}
         />
-        </Col>
-        <Col xs={5} className="text-center">
+      </Col>
+      <Col xs={5} className="text-center">
         <IoMdThumbsDown
           style={{
             width: "2.5rem",
@@ -36,7 +32,7 @@ const NoLike = (props) => {
             dispatch(dislikeFav(props.id));
           }}
         />
-        </Col>
+      </Col>
     </>
   );
 };
@@ -47,16 +43,16 @@ const Like = (props) => {
 
   return (
     <>
-        <IoMdThumbsUp
-          style={{
-            width: "5rem",
-            height: "auto",
-            color: "green",
-          }}
-          onClick={() => {
-            dispatch(resetFav(props.id));
-          }}
-        />
+      <IoMdThumbsUp
+        style={{
+          width: "5rem",
+          height: "auto",
+          color: "green",
+        }}
+        onClick={() => {
+          dispatch(resetFav(props.id));
+        }}
+      />
     </>
   );
 };
@@ -67,17 +63,49 @@ const DisLike = (props) => {
 
   return (
     <>
-        <IoMdThumbsDown
-          style={{
-            width: "5rem",
-            height: "auto",
-            color: "Red",
-          }}
-          onClick={() => {
-            dispatch(resetFav(props.id));
-          }}
-        />
+      <IoMdThumbsDown
+        style={{
+          width: "5rem",
+          height: "auto",
+          color: "Red",
+        }}
+        onClick={() => {
+          dispatch(resetFav(props.id));
+        }}
+      />
     </>
   );
 };
 export { DisLike };
+
+const LikeListMobile = () => {
+  return (
+    <>
+      <IoMdThumbsUp
+        style={{
+          width: "1.5rem",
+          height: "auto",
+          marginBottom: "8",
+          color: "green",
+        }}
+      />
+    </>
+  );
+};
+export { LikeListMobile };
+
+const DisLikeListMobile = () => {
+  return (
+    <>
+      <IoMdThumbsDown
+        style={{
+          width: "1.5rem",
+          height: "auto",
+          marginBottom: "8",
+          color: "Red",
+        }}
+      />
+    </>
+  );
+};
+export { DisLikeListMobile };
