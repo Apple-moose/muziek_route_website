@@ -113,12 +113,12 @@ export default function HomePageMobile() {
 
   //-----------------COLORS--------------------------------
 
-  const buttonColors = ["primary", "warning", "success", "danger", "info"];
+  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
 
-  const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * buttonColors.length);
-    return buttonColors[randomIndex];
-  };
+  // const getRandomColor = () => {
+  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
+  //   return buttonColors[randomIndex];
+  // };
 
   //-----------------DEPENDENCIES-------------------------------
 
