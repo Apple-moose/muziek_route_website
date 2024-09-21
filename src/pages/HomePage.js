@@ -111,8 +111,12 @@ export default function HomePage() {
 
   //-----------------LYRICS--------------------------------
 
+  // const lyricsUrl = (doc) => {
+  //   return `/song_list_jpegs/${doc}.jpg`;
+  // };
+
   const lyricsUrl = (doc) => {
-    return `/song_list_jpegs/${doc}.jpg`;
+    return `./lyrics_htm/${doc}.htm`;
   };
 
   const findUserData = (favId) => {
@@ -557,13 +561,22 @@ export default function HomePage() {
             ) : null}
           </Col>
         </Row>
-        <Modal.Body>
-          <Image
-            src={lyricsUrl(chosenSong.doc)}
-            alt="oh oh...image not found!"
-            style={{ width: "100%", height: "auto" }}
+        <Row
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            marginLeft: "15%",
+            marginTop: "5%",
+            marginRight:"0%",
+          }}
+        >
+          <iframe
+            src={lyricsUrl(chosenSong.doc)} // Replace with your .htm file name
+            style={{ width: "100vh", height: "100vh" }}
+            title="HTML content"
           />
-        </Modal.Body>
+        </Row>
         <Modal.Body className="text-end">
           <Button
             variant="secondary"

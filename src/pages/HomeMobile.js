@@ -109,8 +109,12 @@ export default function HomePageMobile() {
     });
   };
   //-----------------LYRICS--------------------------------
+  // const lyricsUrl = (doc) => {
+  //   return `/song_list_jpegs/${doc}.jpg`;
+  // };
+
   const lyricsUrl = (doc) => {
-    return `/song_list_jpegs/${doc}.jpg`;
+    return `./lyrics_htm/${doc}.htm`;
   };
 
   const findUserData = (favId) => {
@@ -568,13 +572,27 @@ export default function HomePageMobile() {
             ) : null}
           </Col>
         </Row>
-        <Modal.Body>
+        <Row
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            margin: 0,
+          }}
+        >
+          <iframe
+            src={lyricsUrl(chosenSong.doc)} // Replace with your .htm file name
+            style={{ width: "100%", height: "100vh", border: "none" }}
+            title="HTML content"
+          />
+        </Row>
+        {/* <Modal.Body>
           <Image
             src={lyricsUrl(chosenSong.doc)}
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />
-        </Modal.Body>
+        </Modal.Body> */}
         <Modal.Body className="text-end">
           <Button
             variant="secondary"
