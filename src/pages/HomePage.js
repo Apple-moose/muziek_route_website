@@ -1,5 +1,6 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "../style/global.scss";
 import { selectFav } from "../store/favorites/selectors.js";
 import {
@@ -7,7 +8,11 @@ import {
   selectSongsByTitle,
   selectSongsByArtist,
 } from "../store/songs/selectors.js";
-import { bootstrapUser, resetFavData } from "../store/favorites/slice.js";
+import {
+  bootstrapUser,
+  resetFavData,
+  resetUserLoginData,
+} from "../store/favorites/slice.js";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import {
   NoLike,
@@ -16,6 +21,13 @@ import {
   LikeList,
   DisLikeList,
 } from "../components/likeButtons";
+import {
+  removeUser,
+  sendHate,
+  sendLike,
+  resetVotes,
+} from "../store/favorites/actions";
+
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import {
   Container,
@@ -28,11 +40,16 @@ import {
 } from "react-bootstrap";
 
 export default function HomePage() {
-  const fav = useSelector(selectFav);
+  const userFav = useSelector(selectFav);
+  const fav = userFav.favArray;
   const songList = useSelector(selectSongList);
   const songsByTitle = useSelector(selectSongsByTitle);
   const songsByArtist = useSelector(selectSongsByArtist);
+  const userId = userFav.userId;
+  const username = userFav.username;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
   const [showSongs, setShowSongs] = useState(false);
@@ -111,15 +128,11 @@ export default function HomePage() {
 
   //-----------------LYRICS--------------------------------
 
-  // const lyricsUrl = (doc) => {
-  //   return `/song_list_jpegs/${doc}.jpg`;
-  // };
-
   const lyricsUrl = (doc) => {
     return `./lyrics_htm/${doc}.htm`;
   };
 
-  const findUserData = (favId) => {
+  const searchFavData = (favId) => {
     return fav.find((u) => u.id === favId);
   };
   //--------------Lyrics SORTING---------------------------
@@ -137,15 +150,16 @@ export default function HomePage() {
     let likedSongs = array1.map((t) => songList.find((i) => i.id === t.id));
     return likedSongs.filter((song) => song);
   };
-
-  //-----------------COLORS--------------------------------
-
-  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
-
-  // const getRandomColor = () => {
-  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
-  //   return buttonColors[randomIndex];
-  // };
+  //-----------------VOTING SYSTEM------------------------------
+  const sendPrefs = () => {
+    fav.forEach((f) => {
+      if (f.like === 1 && f.dislike === 0) {
+        dispatch(sendLike(userId, f.id));
+      } else if (f.like === 0 && f.dislike === 1) {
+        dispatch(sendHate(userId, f.id));
+      }
+    });
+  };
 
   //-----------------DEPENDENCIES-------------------------------
 
@@ -201,7 +215,12 @@ export default function HomePage() {
             </Button>
           </Col>
           <Col md={10}>
-            <div className="mt-5 fs-1">⭐️Welkom Muziek Routers!⭐️</div>
+            {!localStorage.muziekRoute_username ||
+            localStorage.muziekRoute_username.startsWith("user-") ? (
+              <div className="mt-5 fs-1">⭐️Welkom Muziek Routers!⭐️</div>
+            ) : (
+              <div className="mt-5 fs-1">⭐️Welkom {userFav.username}⭐️</div>
+            )}
           </Col>
         </Row>
         <Row style={{ position: "relative", width: "100%", margin: "0" }}>
@@ -309,7 +328,7 @@ export default function HomePage() {
         ></Row>
       </Container>
 
-      {/* -o-o-o-o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
+      {/* -o-o-o- MENU -o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
 
       <Modal show={showMenu} onHide={hideMenu}>
         <Modal.Header closeButton className="d-flex justify-content-center">
@@ -383,7 +402,7 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- SONGLIST -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showSongs} onHide={hideSongs} className="modalList">
         <Row className="ms-2 me-2">
@@ -415,10 +434,11 @@ export default function HomePage() {
             </Button>
           </div>{" "}
         </Modal.Header>
-        <Modal.Header className="mb-3">
+        <Modal.Header className="mb-4">
           <Form.Select
             id="sortList"
             name="sortSongList"
+            className="fs-3"
             value={listSorting}
             onChange={(e) => {
               setListSorting(e.target.value);
@@ -437,7 +457,7 @@ export default function HomePage() {
             <Row key={song.id} className="align-items-center ms-2 mb-2">
               <Col md={8} className="text-start fs-1">
                 <Button
-                  variant={findUserData(song.id)?.color || "outline-secondary"}
+                  variant={searchFavData(song.id)?.color || "outline-secondary"}
                   className="text-light fs-4 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
@@ -451,7 +471,7 @@ export default function HomePage() {
                   {song.title} - {song.artist}
                 </Button>
               </Col>
-              {!findUserData(song.id) ? (
+              {!searchFavData(song.id) ? (
                 <NoLike key={song.id} id={song.id} />
               ) : (
                 fav.map((u) => {
@@ -473,19 +493,45 @@ export default function HomePage() {
 
         <Row className="mt-5 mb-3">
           <Button
-            variant="secondary"
-            className="text-left fs-2"
-            onClick={() => {
-              hideSongs();
-              onClickShowMenu();
+            variant={!localStorage.muziekRoute_username ? "secondary" : "info"}
+            className="text-left fs-1"
+            onClick={async () => {
+              if (!userId && !username) {
+                hideSongs();
+                navigate("./login");
+              } else {
+                try {
+                  await dispatch(resetVotes(userId));
+                  sendPrefs();
+                  alert("SUCCESS! We have received your concert preferences");
+                } catch (error) {
+                  alert("Failed to erase login data. Please try again.");
+                }
+              }
             }}
           >
-            Send Preferences to server
+            Send us your Musical Preferences!
           </Button>
         </Row>
         <Modal.Body className="text-end">
           <Button
-            variant="dark"
+            variant="danger"
+            className="me-5"
+            onClick={async () => {
+              try {
+                await dispatch(removeUser(userId));
+                dispatch(resetUserLoginData());
+                alert("Your Login Data is now erased");
+              } catch (error) {
+                alert("Failed to erase login data. Please try again.");
+              }
+            }}
+          >
+            Reset Login Data
+          </Button>
+
+          <Button
+            variant="warning"
             onClick={() => {
               hideSongs();
               onClickShowMenu();
@@ -496,19 +542,19 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- LYRICS -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showLyrics} onHide={hideLyrics} className="modalLyrics">
         <Modal.Header closeButton className="text-center">
           <Modal.Title className="fs-3 fw-b w-100">
             <Row>
               <div>
-                {findUserData(chosenSong.id)?.color === "success" ? (
+                {searchFavData(chosenSong.id)?.color === "success" ? (
                   <>
                     <LikeList />
                     &nbsp;
                   </>
-                ) : findUserData(chosenSong.id)?.color === "danger" ? (
+                ) : searchFavData(chosenSong.id)?.color === "danger" ? (
                   <>
                     <DisLikeList />
                     &nbsp;
@@ -566,9 +612,9 @@ export default function HomePage() {
             position: "relative",
             width: "100%",
             height: "100%",
-            marginLeft: "15%",
+            marginLeft: "25%",
             marginTop: "5%",
-            marginRight:"0%",
+            marginRight: "0%",
           }}
         >
           <iframe
@@ -590,7 +636,7 @@ export default function HomePage() {
         </Modal.Body>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- BIO'S -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showBioPat} onHide={hideBioPat} className="modalBio">
         <Row className="ms-2 me-3 text-end">
@@ -637,7 +683,7 @@ export default function HomePage() {
         </Row>
         <Modal.Body>
           <Image
-            src="V_M_frank.jpg"
+            src="bio_anousch_website.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />

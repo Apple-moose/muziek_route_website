@@ -81,7 +81,7 @@ const initialState = {
     { id: "17", title: "Feel", artist: "Robbie Williams", doc: "feel" },
     {
       id: "18",
-      title: "Fly me to the Moone",
+      title: "Fly me to the Moon",
       artist: "Bart Howard",
       doc: "fly_me",
     },
@@ -244,6 +244,12 @@ const initialState = {
       title: "Con te Partiro (Time to say Goodbye)",
       artist: "Bocelli-Brightman",
       doc: "con_te_partiro",
+    },
+    {
+      id: "54",
+      title: "Teardrop",
+      artist: "Massive Attack",
+      doc: "teardrop",
     },
   ],
 };

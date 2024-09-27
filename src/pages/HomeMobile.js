@@ -484,7 +484,7 @@ export default function HomePageMobile() {
             className="text-left fs-2"
             onClick={() => {
               hideSongs();
-              onClickShowMenu();
+              // onClickShowMenu();
             }}
           >
             Send Preferences to server
@@ -577,22 +577,17 @@ export default function HomePageMobile() {
             position: "relative",
             width: "100%",
             height: "100%",
-            margin: 0,
+            marginLeft: "2%",
+            marginTop: "5%",
+            marginRight:"2%",
           }}
         >
           <iframe
             src={lyricsUrl(chosenSong.doc)} // Replace with your .htm file name
-            style={{ width: "100%", height: "100vh", border: "none" }}
+            style={{ width: "100vh", height: "100vh" }}
             title="HTML content"
           />
         </Row>
-        {/* <Modal.Body>
-          <Image
-            src={lyricsUrl(chosenSong.doc)}
-            alt="oh oh...image not found!"
-            style={{ width: "100%", height: "auto" }}
-          />
-        </Modal.Body> */}
         <Modal.Body className="text-end">
           <Button
             variant="secondary"
