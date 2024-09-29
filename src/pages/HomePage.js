@@ -82,8 +82,15 @@ export default function HomePage() {
   const audioBike = new Audio("bike.mp3");
   const audioValk = new Audio("Valkenhoff.mp3");
   const audioMartel = new Audio("Martel.mp3");
+  const audioMoose = new Audio("moose_sound.mp3");
 
   //-----------------AUDIOS--------------------------------
+  const playMoose = () => {
+    audioMoose.play().catch((error) => {
+      console.error("Audio play failed:", error);
+    });
+  };
+
   const playAudioAnoush = () => {
     audioAnoush.play().catch((error) => {
       console.error("Audio play failed:", error);
@@ -125,6 +132,13 @@ export default function HomePage() {
       console.error("Audio play failed:", error);
     });
   };
+
+  //-----------------EMAIL LINK--------------------------------
+
+  const email = "PatriceMartelSpanishGuitar@gmail.com";
+  const subject = "From MuziekRoute Concert...";
+  const body = "Here's my contact. Please contact me";
+  const subject2 = "For Apple_moose services";
 
   //-----------------LYRICS--------------------------------
 
@@ -388,6 +402,7 @@ export default function HomePage() {
           <div>
             Powered by Apple
             <Image
+              onClick={playMoose}
               size={30}
               src="Moose-Icon(Small).png"
               alt="logo not found!"
@@ -714,26 +729,39 @@ export default function HomePage() {
         </Row>
         <Row>
           <Modal.Body>
-            <Image
-              src="V_M_frank.jpg"
-              alt="oh oh...image not found!"
-              className="text-center"
-              style={{ width: "100%", height: "auto" }}
-            />
+            <a
+              href={`mailto:${email}?subject=${encodeURIComponent(
+                subject
+              )}&body=${encodeURIComponent(body)}`}
+            >
+              <Image
+                src="V_M_frank.jpg"
+                alt="oh oh...image not found!"
+                className="text-center"
+                style={{ width: "100%", height: "auto", cursor: "pointer" }}
+              />
+            </a>
           </Modal.Body>
         </Row>
         <div>
-          <Image
-            size={30}
-            src="pat_spaanse_gitaar.jpg"
-            alt="logo not found!"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <a
+            href={`mailto:${email}?subject=${encodeURIComponent(
+              subject
+            )}&body=${encodeURIComponent(body)}`}
+          >
+            <Image
+              size={30}
+              src="pat_spaanse_gitaar.jpg"
+              alt="logo not found!"
+              style={{ width: "100%", height: "auto" }}
+            />
+          </a>
         </div>
         <Row className="justify-content-center">
           <Col xs={4} className="text-center">
             <div>
               <Image
+                onClick={playMoose}
                 size={10}
                 src="Moose-Icon(Small).png"
                 alt="logo not found!"
@@ -743,10 +771,16 @@ export default function HomePage() {
             </div>
           </Col>
           <Col xs={8} className="mt-5 fs-2">
-            Apple-Moose: <b>(github.com/Apple-moose)</b>
-            <p>
-              em@il: <b>patrissio@gmail.com</b>
-            </p>
+            <a
+              href={`mailto:${email}?subject=${encodeURIComponent(
+                subject2
+              )}&body=${encodeURIComponent(body)}`}
+            >
+              Apple-Moose: <b>(github.com/Apple-moose)</b>
+              <p>
+                em@il: <b>patrissio@gmail.com</b>
+              </p>
+            </a>
           </Col>
         </Row>
         <Modal.Body className="text-end">

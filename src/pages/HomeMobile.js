@@ -125,6 +125,14 @@ export default function HomePageMobile() {
       console.error("Audio play failed:", error);
     });
   };
+
+    //-----------------EMAIL LINK--------------------------------
+ 
+    const email = "PatriceMartelSpanishGuitar@gmail.com"; 
+    const subject = "From MuziekRoute Concert..."; 
+    const body = "Here's my contact. Please contact me"; 
+    const subject2 = "For Apple_moose services";
+
   //-----------------LYRICS--------------------------------
 
   const lyricsUrl = (doc) => {
