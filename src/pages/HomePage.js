@@ -753,7 +753,7 @@ export default function HomePage() {
               size={30}
               src="pat_spaanse_gitaar.jpg"
               alt="logo not found!"
-              style={{ width: "100%", height: "auto" }}
+              style={{ width: "100%", height: "auto", cursor: "pointer" }}
             />
           </a>
         </div>
