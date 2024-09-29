@@ -1,5 +1,6 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "../style/globalMobile.scss";
 import { selectFav } from "../store/favorites/selectors.js";
 import {
@@ -7,7 +8,11 @@ import {
   selectSongsByTitle,
   selectSongsByArtist,
 } from "../store/songs/selectors.js";
-import { bootstrapUser, resetFavData } from "../store/favorites/slice.js";
+import {
+  bootstrapUser,
+  resetFavData,
+  resetUserLoginData,
+} from "../store/favorites/slice.js";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import {
   NoLike,
@@ -16,6 +21,12 @@ import {
   LikeListMobile,
   DisLikeListMobile,
 } from "../components/likeButtonsMobile";
+import {
+  removeUser,
+  sendHate,
+  sendLike,
+  resetVotes,
+} from "../store/favorites/actions";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import {
   Container,
@@ -25,14 +36,20 @@ import {
   Button,
   Modal,
   Form,
+  Stack,
 } from "react-bootstrap";
 
 export default function HomePageMobile() {
-  const fav = useSelector(selectFav);
+  const userFav = useSelector(selectFav);
+  const fav = userFav.favArray;
   const songList = useSelector(selectSongList);
   const songsByTitle = useSelector(selectSongsByTitle);
   const songsByArtist = useSelector(selectSongsByArtist);
+  const userId = userFav.userId;
+  const username = userFav.username;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
   const [showSongs, setShowSongs] = useState(false);
@@ -109,15 +126,12 @@ export default function HomePageMobile() {
     });
   };
   //-----------------LYRICS--------------------------------
-  // const lyricsUrl = (doc) => {
-  //   return `/song_list_jpegs/${doc}.jpg`;
-  // };
 
   const lyricsUrl = (doc) => {
     return `./lyrics_htm/${doc}.htm`;
   };
 
-  const findUserData = (favId) => {
+  const searchFavData = (favId) => {
     return fav.find((u) => u.id === favId);
   };
 
@@ -136,14 +150,17 @@ export default function HomePageMobile() {
     let likedSongs = array1.map((t) => songList.find((i) => i.id === t.id));
     return likedSongs.filter((song) => song);
   };
-  //-----------------COLORS--------------------------------
 
-  // const buttonColors = ["primary", "warning", "success", "danger", "info"];
-
-  // const getRandomColor = () => {
-  //   const randomIndex = Math.floor(Math.random() * buttonColors.length);
-  //   return buttonColors[randomIndex];
-  // };
+  //-----------------VOTING SYSTEM------------------------------
+  const sendPrefs = () => {
+    fav.forEach((f) => {
+      if (f.like === 1 && f.dislike === 0) {
+        dispatch(sendLike(userId, f.id));
+      } else if (f.like === 0 && f.dislike === 1) {
+        dispatch(sendHate(userId, f.id));
+      }
+    });
+  };
 
   //-----------------DEPENDENCIES-------------------------------
   useEffect(() => {
@@ -189,9 +206,16 @@ export default function HomePageMobile() {
         style={{ overflowX: "hidden", padding: 0, margin: 0 }}
       >
         <Row>
-          <div className="mt-5 mb-4 text-center fs-3 text-white">
-            ⭐️Welkom Muziek Routers!⭐️
-          </div>
+          {!localStorage.muziekRoute_username ||
+          localStorage.muziekRoute_username.startsWith("user-") ? (
+            <div className="mt-5 mb-4 text-center fs-3 text-white">
+              ⭐️Welkom Muziek Routers!⭐️
+            </div>
+          ) : (
+            <div className="mt-5 mb-4 text-center fs-3 text-white">
+              ⭐️Welkom {userFav.username}⭐️
+            </div>
+          )}
         </Row>
         <Row className="mb-4 mt-4 me-0 text-white text-center">
           <Button
@@ -310,7 +334,7 @@ export default function HomePageMobile() {
         ></Row>
       </Container>
 
-      {/* -o-o-o-o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
+      {/* -o-o-o- MENU -o-o-o-o-o-o-oo-o-o--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o- */}
 
       <Modal show={showMenu} onHide={hideMenu}>
         <Modal.Header closeButton className="d-flex justify-content-center">
@@ -384,7 +408,7 @@ export default function HomePageMobile() {
         </Modal.Body>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- SONGLIST -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showSongs} onHide={hideSongs} className="modalListMobile">
         <Row className="ms-2 me-2">
@@ -416,10 +440,11 @@ export default function HomePageMobile() {
             </Button>
           </div>{" "}
         </Modal.Header>
-        <Modal.Header className="mb-3">
+        <Modal.Header className="mb-4">
           <Form.Select
             id="sortList"
             name="sortSongList"
+            className="fs-3"
             value={listSorting}
             onChange={(e) => {
               setListSorting(e.target.value);
@@ -436,9 +461,9 @@ export default function HomePageMobile() {
         {sortedSongList(listSorting).map((song) => {
           return (
             <div key={`s-${song.id}`}>
-              <Row className="ms-2 me-2">
+              <Row className="ms-2 me-2 mb-2 mt-2">
                 <Button
-                  variant={findUserData(song.id)?.color || "outline-secondary"}
+                  variant={searchFavData(song.id)?.color || "outline-secondary"}
                   className="text-light fs-6 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
@@ -457,7 +482,7 @@ export default function HomePageMobile() {
                 key={`likes-${song.id}`}
                 className="d-flex w-90 justify-content-center mb-1 mt-1"
               >
-                {!findUserData(song.id) ? (
+                {!searchFavData(song.id) ? (
                   <NoLike key={song.id} id={song.id} />
                 ) : (
                   fav.map((u) => {
@@ -480,19 +505,46 @@ export default function HomePageMobile() {
 
         <Row className="mt-5 mb-3">
           <Button
-            variant="secondary"
-            className="text-left fs-2"
-            onClick={() => {
-              hideSongs();
-              // onClickShowMenu();
+            variant={!localStorage.muziekRoute_username ? "secondary" : "info"}
+            className="text-left fs-1"
+            onClick={async () => {
+              if (!userId && !username) {
+                hideSongs();
+                navigate("./login");
+              } else {
+                try {
+                  await dispatch(resetVotes(userId));
+                  sendPrefs();
+                  alert("SUCCESS! We have received your concert preferences");
+                } catch (error) {
+                  alert("Failed to erase login data. Please try again.");
+                }
+              }
             }}
           >
-            Send Preferences to server
+            Send us your Musical Preferences!
           </Button>
         </Row>
-        <Modal.Body className="text-end">
+        <Stack direction="horizontal" gap={4} className="mt-5 mb-5">
           <Button
-            variant="dark"
+            variant="danger"
+            className="fs-6 fw-b"
+            onClick={async () => {
+              try {
+                await dispatch(removeUser(userId));
+                dispatch(resetUserLoginData());
+                alert("Your Login Data is now erased");
+              } catch (error) {
+                alert("Failed to erase login data. Please try again.");
+              }
+            }}
+          >
+            Reset Login
+          </Button>
+
+          <Button
+            variant="warning"
+            className="fs-5 fw-b ms-2"
             onClick={() => {
               hideSongs();
               onClickShowMenu();
@@ -500,10 +552,10 @@ export default function HomePageMobile() {
           >
             Back to Menu
           </Button>
-        </Modal.Body>
+        </Stack>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- LYRICS -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal
         show={showLyrics}
@@ -514,12 +566,12 @@ export default function HomePageMobile() {
           <Modal.Title className="fs-3 fw-b w-100">
             <Row>
               <div>
-                {findUserData(chosenSong.id)?.color === "success" ? (
+                {searchFavData(chosenSong.id)?.color === "success" ? (
                   <>
                     <LikeListMobile />
                     &nbsp;
                   </>
-                ) : findUserData(chosenSong.id)?.color === "danger" ? (
+                ) : searchFavData(chosenSong.id)?.color === "danger" ? (
                   <>
                     <DisLikeListMobile />
                     &nbsp;
@@ -579,11 +631,11 @@ export default function HomePageMobile() {
             height: "100%",
             marginLeft: "2%",
             marginTop: "5%",
-            marginRight:"2%",
+            marginRight: "2%",
           }}
         >
           <iframe
-            src={lyricsUrl(chosenSong.doc)} // Replace with your .htm file name
+            src={lyricsUrl(chosenSong.doc)}
             style={{ width: "100vh", height: "100vh" }}
             title="HTML content"
           />
@@ -601,7 +653,7 @@ export default function HomePageMobile() {
         </Modal.Body>
       </Modal>
 
-      {/* -o-o-o--o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
+      {/* -o-o-o- BIO'S -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}
 
       <Modal show={showBioPat} onHide={hideBioPat} className="modalBioMobile">
         <Row className="ms-2 me-3 text-end">
@@ -652,7 +704,7 @@ export default function HomePageMobile() {
         </Row>
         <Modal.Body>
           <Image
-            src="V_M_frank.jpg"
+            src="bio_anousch_website.jpg"
             alt="oh oh...image not found!"
             style={{ width: "100%", height: "auto" }}
           />

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { sendHate, sendLike, loginUser } from "../store/favorites/actions";
 import { selectFav } from "../store/favorites/selectors.js";
+import { isMobile } from "react-device-detect";
 import { Container, Row, Button, Form } from "react-bootstrap";
 
 const LoginPage = () => {
@@ -78,9 +79,15 @@ const LoginPage = () => {
       className="text-white"
     >
       <Clock />
-      <Row className="fs-1 mb-3 justify-content-center">
-        ⭐️ Send Us Your Musical Preferences: ⭐️
-      </Row>
+      {isMobile ? (
+        <Row className="fs-6 mb-3 justify-content-center">
+          ⭐️ Send Us Your Musical Preferences: ⭐️
+        </Row>
+      ) : (
+        <Row className="fs-2 mb-3 justify-content-center">
+          ⭐️ Send Us Your Musical Preferences: ⭐️
+        </Row>
+      )}
       <Row className="ms-5 me-5 mt-5 mb-5">
         <Form.Select
           id="show_no"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { startLoading, reviewsFetched, setUserId, setUsername } from "./slice";
+import { setUserId, setUsername } from "./slice";
 
 //Local URL------>
 const API_URL = `http://localhost:8000`;
@@ -15,7 +15,6 @@ export const loginUser = (username, show_no) => {
         username: username,
         show_no: show_no,
       });
-      console.log("from actions", response.data);
       dispatch(setUserId(response.data.id));
       dispatch(setUsername(response.data.username));
       return response.data;
@@ -29,7 +28,6 @@ export const removeUser = (id) => {
   return async function thunk() {
     try {
       const response = await axios.delete(API_URL + `/signup/${id}`);
-      console.log("response at removeUser:", response.data);
       return response;
     } catch (err) {
       console.log("Error sending delete request", err);
