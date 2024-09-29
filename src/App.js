@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import HomePage from "./pages/HomePage";
 import HomePageMobile from "./pages/HomeMobile";
-import Query from "./pages/Query";
 import { LoginPage } from "./pages/LoginPage";
 
 export default function App() {
@@ -18,7 +17,6 @@ export default function App() {
       ) : (
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/query" element={<Query />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       )}
