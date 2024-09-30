@@ -470,10 +470,10 @@ export default function HomePage() {
         {sortedSongList(listSorting).map((song) => {
           return (
             <Row key={song.id} className="align-items-center ms-2 mb-2">
-              <Col md={8} className="text-start fs-1">
+              <Col md={8} className="text-start">
                 <Button
                   variant={searchFavData(song.id)?.color || "outline-secondary"}
-                  className="text-light fs-4 fw-b text-start w-100"
+                  className="text-light fs-3 fw-b text-start w-100"
                   style={{
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add shadow to the text
                   }}

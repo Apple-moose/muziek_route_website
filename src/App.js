@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./style/global.scss";
 import { Routes, Route } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import HomePage from "./pages/HomePage";
