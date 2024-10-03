@@ -8,10 +8,10 @@ import {
 } from "./slice";
 
 //Local URL------>
-const API_URL = `http://localhost:5432`;
+// const API_URL = `http://localhost:5432`;
 
 //Web URL------>
-// const API_URL = `https://webshop-api-sr7l.onrender.com`;
+const API_URL = `https://muziek-route-api.onrender.com`;
 
 export function Signup(signUsername, signPassword, is_Admin, navigate) {
   return async function thunk(dispatch, getState) {
@@ -58,10 +58,6 @@ export function Signup(signUsername, signPassword, is_Admin, navigate) {
 
 export function Login(username, password, navigate) {
   return async function thunk(dispatch, getState) {
-    //best idea would be (correct syntax await fault)
-    /* <script src="https://gist.github.com/wearethefoos/9623c25126cab91fe51f6bbda874a16a.js"></script> */
-
-    //SEE BELLOW OR PROMISES.JS!!
 
     dispatch(startLoading());
     await axios

@@ -2,10 +2,10 @@ import axios from "axios";
 import { setUserId, setUsername } from "./slice";
 
 //Local URL------>
-const API_URL = `http://localhost:8000`;
+// const API_URL = `http://localhost:8000`;
 
 //Web URL------>
-// const API_URL = `https://webshop-api-sr7l.onrender.com`;
+const API_URL = `https://muziek-route-api.onrender.com`;
 
 //LOGIN for USERS--------------------->
 export const loginUser = (username, show_no) => {
