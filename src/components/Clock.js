@@ -23,7 +23,7 @@ const Clock = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "5rem",
+    fontSize: "4rem",
     background: "black",
     backgroundSize: "cover",
     color: "white",

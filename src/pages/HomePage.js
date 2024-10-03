@@ -346,7 +346,7 @@ export default function HomePage() {
 
       <Modal show={showMenu} onHide={hideMenu}>
         <Modal.Header closeButton className="d-flex justify-content-center">
-          <Modal.Title className="fs-1 fw-b">Where to?</Modal.Title>
+          <Modal.Title className="fs-1 fw-b">Menu: Where to?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row className="mb-3">
@@ -388,7 +388,7 @@ export default function HomePage() {
           <Row className="mb-3">
             <Button
               variant="warning"
-              className="fs-2 fw-b ms-0 me-0 text-center"
+              className="fs-1 fw-b ms-0 me-0 text-center"
               onClick={() => {
                 onClickShowContact();
                 hideMenu();
@@ -736,6 +736,22 @@ export default function HomePage() {
             >
               <Image
                 src="V_M_frank.jpg"
+                alt="oh oh...image not found!"
+                className="text-center"
+                style={{ width: "100%", height: "auto", cursor: "pointer" }}
+              />
+            </a>
+          </Modal.Body>
+        </Row>
+        <Row>
+          <Modal.Body>
+            <a
+              href="https://www.buymeacoffee.com/Valkenhoff_Martel"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="buy_me_a_coffe.jpg"
                 alt="oh oh...image not found!"
                 className="text-center"
                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
