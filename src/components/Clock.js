@@ -24,7 +24,7 @@ const Clock = () => {
     justifyContent: "center",
     alignItems: "center",
     fontSize: "4rem",
-    background: "black",
+    background: "",
     backgroundSize: "cover",
     color: "white",
     // textShadow: '2px 2px 4px rgba(0,0,0,0.7)',

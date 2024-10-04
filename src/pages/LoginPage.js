@@ -80,113 +80,227 @@ const LoginPage = () => {
     >
       <Clock />
       {isMobile ? (
-        <Row className="fs-6 mb-3 justify-content-center">
-          ⭐️ Send Us Your Musical Preferences: ⭐️
-        </Row>
+        <>
+          <Row className="fs-6 mb-3 justify-content-center">
+            ⭐️ Send Us Your Musical Preferences: ⭐️
+          </Row>
+          <Row className="ms-5 me-5 mt-5 mb-5">
+            <Form.Select
+              id="show_no"
+              name="show_no"
+              className="fs-2"
+              value={show_no}
+              onChange={handleShowChange}
+            >
+              <option value="">Select Concert 🙏</option>
+              <option value="13">🕐 ⇢13h</option>
+              <option value="14">🕑 ⇢14h</option>
+              <option value="15">🕒 ⇢15h</option>
+              <option value="16">🕓 ⇢16h</option>
+            </Form.Select>
+          </Row>
+          {!show_no ? (
+            <h1 className="text-center">👤</h1>
+          ) : (
+            <div className="text-center">
+              <Form>
+                <Form.Group className="mb-3 ms-0 me-5">
+                  <Row className="ms-0 me-5">
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      type="text"
+                      className="fs-3 mb-2 ms-5 me-5"
+                      placeholder="--> User name ? 🤔"
+                      value={usernameState}
+                      onChange={(e) => setUsernameState(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); // Prevent the default form submission on 'Enter'
+                        }
+                      }}
+                      autoFocus
+                      autoComplete="off"
+                    />
+                  </Row>{" "}
+                </Form.Group>
+                <Row className="mt-2 ms-5 me-5 mb-5">
+                  {!usernameState ? (
+                    <Button
+                      type="button"
+                      variant="success"
+                      className="fs-2 w-100"
+                      onClick={() => {
+                        alert(
+                          "Please provide us with a username or send your preferences Anonymously!"
+                        );
+                      }}
+                    >
+                      ✋
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="success"
+                      className="fs-2 w-100"
+                      onClick={async () => {
+                        try {
+                          await dispatch(loginUser(usernameState, show_no));
+                          setLoginCompleted(true);
+                        } catch (error) {
+                          console.error("dispatch failed:", error);
+                          alert(
+                            "An error occurred while sending your data in. Please try again."
+                          );
+                        }
+                      }}
+                    >
+                      <>
+                        Send as: <b>⭐️{usernameState}⭐️</b>
+                      </>
+                    </Button>
+                  )}
+                </Row>
+                <Row className="ms-2 me-2">
+                  <Button
+                    type="button"
+                    variant="warning"
+                    className="fs-1 fw-bold fst-italic w-100"
+                    onClick={async () => {
+                      try {
+                        const generatedUsername = await getRandomUsername();
+                        await dispatch(loginUser(generatedUsername, show_no));
+                        setLoginCompleted(true);
+                      } catch (error) {
+                        console.error("Dispatch failed:", error);
+                        alert(
+                          "An error occurred while sending your data. Please try again."
+                        );
+                      }
+                    }}
+                  >
+                    👉or Send Us Your Preferences Anonymously
+                  </Button>
+                </Row>
+              </Form>
+            </div>
+          )}
+        </>
       ) : (
-        <Row className="fs-2 mb-3 justify-content-center">
-          ⭐️ Send Us Your Musical Preferences: ⭐️
-        </Row>
-      )}
-      <Row className="ms-5 me-5 mt-5 mb-5">
-        <Form.Select
-          id="show_no"
-          name="show_no"
-          className="fs-2"
-          value={show_no}
-          onChange={handleShowChange}
+        <div
+          style={{
+            width: "50%",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <option value="">Select Concert 🙏</option>
-          <option value="13">🕐 ⇢13h</option>
-          <option value="14">🕑 ⇢14h</option>
-          <option value="15">🕒 ⇢15h</option>
-          <option value="16">🕓 ⇢16h</option>
-        </Form.Select>
-      </Row>
-      {!show_no ? (
-        <h1 className="text-center">👤</h1>
-      ) : (
-        <div className="text-center">
-          <Form>
-            <Form.Group className="mb-3 ms-0 me-5">
-              <Row className="ms-0 me-5">
-                <Form.Control
-                  id="username"
-                  name="username"
-                  type="text"
-                  className="fs-3 mb-2 ms-5 me-5"
-                  placeholder="--> User name ? 🤔"
-                  value={usernameState}
-                  onChange={(e) => setUsernameState(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault(); // Prevent the default form submission on 'Enter'
-                    }
-                  }}
-                  autoFocus
-                  autoComplete="off"
-                />
-              </Row>{" "}
-            </Form.Group>
-            <Row className="mt-2 ms-5 me-5 mb-5">
-              {!usernameState ? (
-                <Button
-                  type="button"
-                  variant="success"
-                  className="fs-2 w-100"
-                  onClick={() => {
-                    alert(
-                      "Please provide us with a username or send your preferences Anonymously!"
-                    );
-                  }}
-                >
-                  ✋
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="success"
-                  className="fs-2 w-100"
-                  onClick={async () => {
-                    try {
-                      await dispatch(loginUser(usernameState, show_no));
-                      setLoginCompleted(true);
-                    } catch (error) {
-                      console.error("dispatch failed:", error);
-                      alert(
-                        "An error occurred while sending your data in. Please try again."
-                      );
-                    }
-                  }}
-                >
-                  <>
-                    Send as: <b>⭐️{usernameState}⭐️</b>
-                  </>
-                </Button>
-              )}
-            </Row>
-            <Row className="ms-2 me-2">
-              <Button
-                type="button"
-                variant="warning"
-                className="fs-1 fw-bold fst-italic w-100"
-                onClick={async () => {
-                  try {
-                    const generatedUsername = await getRandomUsername();
-                    await dispatch(loginUser(generatedUsername, show_no));
-                    setLoginCompleted(true);
-                  } catch (error) {
-                    console.error("Dispatch failed:", error);
-                    alert(
-                      "An error occurred while sending your data. Please try again."
-                    );
-                  }
-                }}
-              >
-                👉or Send Us Your Preferences Anonymously
-              </Button>
-            </Row>
-          </Form>
+          <Row className="fs-2 mb-3 justify-content-center">
+            ⭐️ Send Us Your Musical Preferences: ⭐️
+          </Row>
+          <Row className="ms-5 me-5 mt-5 mb-5">
+            <Form.Select
+              id="show_no"
+              name="show_no"
+              className="fs-2"
+              value={show_no}
+              onChange={handleShowChange}
+            >
+              <option value="">Select Concert 🙏</option>
+              <option value="13">🕐 ⇢13h</option>
+              <option value="14">🕑 ⇢14h</option>
+              <option value="15">🕒 ⇢15h</option>
+              <option value="16">🕓 ⇢16h</option>
+            </Form.Select>
+          </Row>
+          {!show_no ? (
+            <h1 className="text-center">👤</h1>
+          ) : (
+            <div className="text-center">
+              <Form>
+                <Form.Group className="mb-3 ms-5 me-5">
+                  <Row>
+                    <Form.Control
+                      id="username"
+                      name="username"
+                      type="text"
+                      className="fs-3 mb-2"
+                      placeholder="--> User name ? 🤔"
+                      value={usernameState}
+                      onChange={(e) => setUsernameState(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); // Prevent the default form submission on 'Enter'
+                        }
+                      }}
+                      autoFocus
+                      autoComplete="off"
+                    />
+                  </Row>{" "}
+                </Form.Group>
+                <Row className="mt-2 mb-4 ms-5 me-5">
+                  {!usernameState ? (
+                    <Button
+                      type="button"
+                      variant="success"
+                      className="fs-2"
+                      onClick={() => {
+                        alert(
+                          "Please provide us with a username or send your preferences Anonymously!"
+                        );
+                      }}
+                    >
+                      ✋
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="success"
+                      className="fs-2"
+                      onClick={async () => {
+                        try {
+                          await dispatch(loginUser(usernameState, show_no));
+                          setLoginCompleted(true);
+                        } catch (error) {
+                          console.error("dispatch failed:", error);
+                          alert(
+                            "An error occurred while sending your data in. Please try again."
+                          );
+                        }
+                      }}
+                    >
+                      <>
+                        Send as: <b>⭐️{usernameState}⭐️</b>
+                      </>
+                    </Button>
+                  )}
+                </Row>
+                <Row className="ms-5 me-5">
+                  <Button
+                    type="button"
+                    variant="warning"
+                    className="fs-1 fw-bold fst-italic"
+                    onClick={async () => {
+                      try {
+                        const generatedUsername = await getRandomUsername();
+                        await dispatch(loginUser(generatedUsername, show_no));
+                        setLoginCompleted(true);
+                      } catch (error) {
+                        console.error("Dispatch failed:", error);
+                        alert(
+                          "An error occurred while sending your data. Please try again."
+                        );
+                      }
+                    }}
+                  >
+                    👉or Send Us Your Preferences Anonymously
+                  </Button>
+                </Row>
+              </Form>
+            </div>
+          )}
         </div>
       )}
     </Container>

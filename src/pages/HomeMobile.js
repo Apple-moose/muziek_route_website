@@ -542,34 +542,50 @@ export default function HomePageMobile() {
             Send us your Musical Preferences!
           </Button>
         </Row>
-        <Stack direction="horizontal" gap={4} className="mt-5 mb-5">
-          <Button
-            variant="danger"
-            className="fs-6 fw-b"
-            onClick={async () => {
-              try {
-                await dispatch(removeUser(userId));
-                dispatch(resetUserLoginData());
-                alert("Your Login Data is now erased");
-              } catch (error) {
-                alert("Failed to erase login data. Please try again.");
-              }
-            }}
-          >
-            Reset Login Data
-          </Button>
+        {!localStorage.muziekRoute_username ? (
+          <Row className="ms-2 me-2">
+            {" "}
+            <Button
+              variant="warning"
+              className="fs-5 fw-b"
+              onClick={() => {
+                hideSongs();
+                onClickShowMenu();
+              }}
+            >
+              Back to Menu
+            </Button>
+          </Row>
+        ) : (
+          <Stack direction="horizontal" gap={4} className="mt-5 mb-5">
+            <Button
+              variant="danger"
+              className="fs-6 fw-b"
+              onClick={async () => {
+                try {
+                  await dispatch(removeUser(userId));
+                  dispatch(resetUserLoginData());
+                  alert("Your Login Data is now erased");
+                } catch (error) {
+                  alert("Failed to erase login data. Please try again.");
+                }
+              }}
+            >
+              Reset Login Data
+            </Button>
 
-          <Button
-            variant="warning"
-            className="fs-5 fw-b ms-2"
-            onClick={() => {
-              hideSongs();
-              onClickShowMenu();
-            }}
-          >
-            Back to Menu
-          </Button>
-        </Stack>
+            <Button
+              variant="warning"
+              className="fs-5 fw-b ms-2"
+              onClick={() => {
+                hideSongs();
+                onClickShowMenu();
+              }}
+            >
+              Back to Menu
+            </Button>
+          </Stack>
+        )}
       </Modal>
 
       {/* -o-o-o- LYRICS -o-o--o-o-o-o-o-o-o-o-o-o-o-o-o--o-o-o-o-o-o--o--o-o-o-o- */}

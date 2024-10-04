@@ -529,22 +529,27 @@ export default function HomePage() {
           </Button>
         </Row>
         <Modal.Body className="text-end">
-          <Button
-            variant="danger"
-            className="me-5"
-            onClick={async () => {
-              try {
-                await dispatch(removeUser(userId));
-                dispatch(resetUserLoginData());
-                alert("Your Login Data is now erased");
-              } catch (error) {
-                alert("Failed to erase login data. Please try again.");
-              }
-            }}
-          >
-            Reset Login Data
-          </Button>
-
+          {!localStorage.muziekRoute_username ? (
+            ""
+          ) : (
+            <>
+              <Button
+                variant="danger"
+                className="me-5"
+                onClick={async () => {
+                  try {
+                    await dispatch(removeUser(userId));
+                    dispatch(resetUserLoginData());
+                    alert("Your Login Data is now erased");
+                  } catch (error) {
+                    alert("Failed to erase login data. Please try again.");
+                  }
+                }}
+              >
+                Reset Login Data
+              </Button>
+            </>
+          )}
           <Button
             variant="warning"
             onClick={() => {
